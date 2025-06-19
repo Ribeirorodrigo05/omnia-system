@@ -12,6 +12,19 @@ import { tasks } from "./tasks";
 import { taskAssignments } from "./task-assignments";
 import { taskCategories } from "./task-categories";
 
+// Import all relations from modular structure
+import {
+  usersRelations,
+  workspacesRelations,
+  workspaceMembersRelations,
+  spacesRelations,
+  spaceMembersRelations,
+  categoriesRelations,
+  tasksRelations,
+  taskAssignmentsRelations,
+  taskCategoriesRelations,
+} from "./relations";
+
 // Export all schemas
 export {
   users,
@@ -25,8 +38,22 @@ export {
   taskCategories,
 };
 
-// Create schema object
+// Export all relations
+export {
+  usersRelations,
+  workspacesRelations,
+  workspaceMembersRelations,
+  spacesRelations,
+  spaceMembersRelations,
+  categoriesRelations,
+  tasksRelations,
+  taskAssignmentsRelations,
+  taskCategoriesRelations,
+};
+
+// Create schema object with relations
 export const schema = {
+  // Tables
   users,
   workspaces,
   workspaceMembers,
@@ -36,6 +63,17 @@ export const schema = {
   tasks,
   taskAssignments,
   taskCategories,
+
+  // Relations
+  usersRelations,
+  workspacesRelations,
+  workspaceMembersRelations,
+  spacesRelations,
+  spaceMembersRelations,
+  categoriesRelations,
+  tasksRelations,
+  taskAssignmentsRelations,
+  taskCategoriesRelations,
 };
 
 // Create database connection
