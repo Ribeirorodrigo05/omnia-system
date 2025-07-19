@@ -27,6 +27,15 @@
 					"fix": "safe",
 					"options": {}
 				}
+			},
+			"suspicious": {
+				"noConsole": {
+					"level": "error",
+					"fix": "safe",
+					"options": {
+						"allow": ["warn", "error"]
+					}
+				}
 			}
 		}
 	},
