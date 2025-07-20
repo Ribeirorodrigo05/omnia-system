@@ -1,27 +1,27 @@
-## Criando instruções para a criação do schema de banco de dados e consiguração do drizzle
+## Creating instructions for database schema creation and Drizzle configuration
 
-## Arquitetura de pastas do sistema
+## System folder architecture
 
 ```
-Omnia utiliza uma arquitetura de pastas organizada para facilitar o desenvolvimento e a manutenção do código. A estrutura é a seguinte:
+Omnia uses an organized folder architecture to facilitate code development and maintenance. The structure is as follows:
 
-estrutura do server-side:
+server-side structure:
 
 src/
-├── server / # Código do servidor
-│   ├── database / # Configuração do banco de dados
-│   │   ├── schemas / # Schemas do banco de dados
-│   │   ├── index.ts / # export de todos os schemas
-drizzle.config.ts / # Configuração do Drizzle ORM
+├── server / # Server code
+│   ├── database / # Database configuration
+│   │   ├── schemas / # Database schemas
+│   │   ├── index.ts / # export of all schemas
+drizzle.config.ts / # Drizzle ORM configuration
 
 ``` 
-## 🗂 **Schemas do Banco de Dados**
+## 🗂 **Database Schemas**
 
- Cada schema é definido em um arquivo separado dentro da pasta `schemas`. Os schemas são organizados de acordo com as entidades do sistema, como `users`, `workspaces`, `spaces`, `categories` e `tasks`.
+Each schema is defined in a separate file within the `schemas` folder. Schemas are organized according to system entities, such as `users`, `workspaces`, `spaces`, `categories` and `tasks`.
 
- Cada entendidade possui suas próprias relações e cardinalidades, definidas de acordo com a arquitetura do sistema.
+Each entity has its own relationships and cardinalities, defined according to the system architecture.
 
- exemplo de schema de um usuário:
+Example of a user schema:
 ```typescript
 // src/server/database/schemas/users.ts
 import { pgTable, serial, text, boolean, timestamp, primaryKey, relation } from 'drizzle-orm/pg-core';
@@ -34,10 +34,11 @@ export const users = pgTable('users', {
   createdAt: timestamp('created-at').defaultNow(),
   updatedAt: timestamp('updated-at').defaultNow().onUpdateNow(),
 });
+```
 
-O schema de um usuário define os campos básicos, como `id`, `email`, `name`, `isActive`, `createdAt` e `updatedAt`. Além disso, as relações com outras entidades são definidas através de chaves estrangeiras.
+The user schema defines basic fields such as `id`, `email`, `name`, `isActive`, `createdAt` and `updatedAt`. Additionally, relationships with other entities are defined through foreign keys.
 
-exemplos de relações e cardinalidades:
+Examples of relationships and cardinalities:
 ```typescript
 // src/server/database/schemas/workspaces.ts
 
@@ -69,29 +70,24 @@ export const workspaces = pgTable('workspaces', {
     index("workspaces_is_active_idx").on(table.isActive),
 ]);
 
-export const workspaceRelations = pgTable(workspace,(many)=>({
-    owner: relation(users, {
-        fields: [workspace.ownerId],
+export const workspaceRelations = relations(workspaces, ({ one, many }) => ({
+    owner: one(users, {
+        fields: [workspaces.ownerId],
         references: [users.id],
     }),
-    spaces: relation(spaces, {
-        fields: [workspace.id],
-        references: [spaces.workspaceId],
-    }),
-    }));
-}) );
-
+    spaces: many(spaces),
+}));
 ```
 
-Sempre deve haver uma relação entre as entidades, como `users` e `workspaces`, onde um usuário pode ser o proprietário de um workspace, e um workspace pode ter vários espaços associados.
+There must always be a relationship between entities, such as `users` and `workspaces`, where a user can be the owner of a workspace, and a workspace can have several associated spaces.
 
-Caso não seja informado o tipo de relação deve-se primeiro perguntar ao usuário se é uma relação de 1:N ou N:N, e então criar a relação adequada.
+If the relationship type is not specified, you should first ask the user if it's a 1:N or N:N relationship, and then create the appropriate relationship.
 
-Com essa base de schemas e relações, o Drizzle ORM pode ser configurado para gerar as tabelas no banco de dados e permitir consultas eficientes entre as entidades.
+With this base of schemas and relationships, Drizzle ORM can be configured to generate tables in the database and allow efficient queries between entities.
 
-Ao criar novos schemas, é importante seguir o padrão de nomenclatura e estrutura para garantir a consistência do código e facilitar a manutenção futura.
+When creating new schemas, it's important to follow the naming pattern and structure to ensure code consistency and facilitate future maintenance.
 
-Deve-se sempre validar as relações e cardinalidades antes de implementar novas funcionalidades, garantindo que o modelo de dados esteja alinhado com os requisitos do sistema.
+You should always validate relationships and cardinalities before implementing new features, ensuring that the data model is aligned with system requirements.
 
-Ao final rode pnpm run db:push para aplicar as alterações no banco de dados.
+At the end, run `pnpm run db:push` to apply changes to the database.
 
