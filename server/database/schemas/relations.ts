@@ -58,8 +58,11 @@ export const categoriesRelations = relations(categories, ({ one, many }) => ({
 	parentCategory: one(categories, {
 		fields: [categories.categoryId],
 		references: [categories.id],
+		relationName: "category_hierarchy",
 	}),
-	subCategories: many(categories),
+	subCategories: many(categories, {
+		relationName: "category_hierarchy",
+	}),
 	tasks: many(tasks),
 	members: many(categoryMembers),
 }));
@@ -77,8 +80,11 @@ export const tasksRelations = relations(tasks, ({ one, many }) => ({
 	parentTask: one(tasks, {
 		fields: [tasks.subTasks],
 		references: [tasks.id],
+		relationName: "task_hierarchy",
 	}),
-	subTasks: many(tasks),
+	subTasks: many(tasks, {
+		relationName: "task_hierarchy",
+	}),
 	comments: many(comments),
 }));
 

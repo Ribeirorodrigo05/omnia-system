@@ -6,6 +6,7 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
+import { users } from "./users";
 
 export const workspaces = pgTable(
 	"workspaces",
@@ -15,7 +16,9 @@ export const workspaces = pgTable(
 		createdAt: timestamp("created-at").defaultNow().notNull(),
 		updatedAt: timestamp("updated-at").defaultNow().notNull(),
 		deletedAt: timestamp("deleted-at"),
-		ownerId: uuid("owner-id").notNull(),
+		ownerId: uuid("owner-id")
+			.notNull()
+			.references(() => users.id),
 	},
 	(table) => [
 		index("workspaces_name_idx").on(table.name),

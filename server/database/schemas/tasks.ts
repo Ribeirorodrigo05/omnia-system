@@ -6,6 +6,8 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
+import { users } from "./users";
+import { categories } from "./categories";
 
 export const tasks = pgTable(
 	"tasks",
@@ -16,14 +18,18 @@ export const tasks = pgTable(
 		updatedAt: timestamp("updated-at").defaultNow().notNull(),
 		deletedAt: timestamp("deleted-at"),
 		points: integer("points"),
-		categoryId: uuid("category-id").notNull(),
+		categoryId: uuid("category-id")
+			.notNull()
+			.references(() => categories.id),
 		startsAt: timestamp("starts-at"),
 		endsAt: timestamp("ends-at"),
 		timeSpent: integer("time-spent"),
-		ownerId: uuid("owner-id").notNull(),
+		ownerId: uuid("owner-id")
+			.notNull()
+			.references(() => users.id),
 		assignedUserIds: uuid("assigned-user-ids").array(),
 		status: varchar("status", { length: 255 }).notNull(),
-		subTasks: uuid("sub-tasks"), // Para tarefas filhas
+		subTasks: uuid("sub-tasks"), // Para tarefas filhas - self reference será adicionada nas relações
 		estimatedTime: integer("estimated-time"),
 		priority: varchar("priority", { length: 255 }),
 	},
