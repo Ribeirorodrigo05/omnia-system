@@ -7,13 +7,13 @@ export const spaces = pgTable(
 	{
 		id: uuid("id").primaryKey().defaultRandom(),
 		name: varchar("name", { length: 255 }).notNull(),
-		createdAt: timestamp("created-at").defaultNow().notNull(),
-		updatedAt: timestamp("updated-at").defaultNow().notNull(),
-		deletedAt: timestamp("deleted-at"),
-		workspaceId: uuid("workspace-id")
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+		deletedAt: timestamp("deleted_at"),
+		workspaceId: uuid("workspace_id")
 			.notNull()
 			.references(() => workspaces.id, { onDelete: "cascade" }),
-		ownerId: uuid("owner-id")
+		ownerId: uuid("owner_id")
 			.notNull()
 			.references(() => users.id),
 	},

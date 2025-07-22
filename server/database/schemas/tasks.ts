@@ -6,31 +6,31 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
-import { users } from "./users";
 import { categories } from "./categories";
+import { users } from "./users";
 
 export const tasks = pgTable(
 	"tasks",
 	{
 		id: uuid("id").primaryKey().defaultRandom(),
 		name: varchar("name", { length: 255 }).notNull(),
-		createdAt: timestamp("created-at").defaultNow().notNull(),
-		updatedAt: timestamp("updated-at").defaultNow().notNull(),
-		deletedAt: timestamp("deleted-at"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+		deletedAt: timestamp("deleted_at"),
 		points: integer("points"),
-		categoryId: uuid("category-id")
+		categoryId: uuid("category_id")
 			.notNull()
 			.references(() => categories.id),
-		startsAt: timestamp("starts-at"),
-		endsAt: timestamp("ends-at"),
-		timeSpent: integer("time-spent"),
-		ownerId: uuid("owner-id")
+		startsAt: timestamp("starts_at"),
+		endsAt: timestamp("ends_at"),
+		timeSpent: integer("time_spent"),
+		ownerId: uuid("owner_id")
 			.notNull()
 			.references(() => users.id),
-		assignedUserIds: uuid("assigned-user-ids").array(),
+		assignedUserIds: uuid("assigned_user_ids").array(),
 		status: varchar("status", { length: 255 }).notNull(),
-		subTasks: uuid("sub-tasks"), // Para tarefas filhas - self reference será adicionada nas relações
-		estimatedTime: integer("estimated-time"),
+		subTasks: uuid("sub_tasks"), // Para tarefas filhas - self reference será adicionada nas relações
+		estimatedTime: integer("estimated_time"),
 		priority: varchar("priority", { length: 255 }),
 	},
 	(table) => [

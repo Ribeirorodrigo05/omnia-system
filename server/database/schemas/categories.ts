@@ -1,21 +1,21 @@
 import { index, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { users } from "./users";
 import { spaces } from "./spaces";
+import { users } from "./users";
 
 export const categories = pgTable(
 	"categories",
 	{
 		id: uuid("id").primaryKey().defaultRandom(),
 		name: varchar("name", { length: 255 }).notNull(),
-		createdAt: timestamp("created-at").defaultNow().notNull(),
-		updatedAt: timestamp("updated-at").defaultNow().notNull(),
-		deletedAt: timestamp("deleted-at"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+		deletedAt: timestamp("deleted_at"),
 		type: varchar("type", { length: 255 }).notNull(),
-		spaceId: uuid("space-id")
+		spaceId: uuid("space_id")
 			.notNull()
 			.references(() => spaces.id, { onDelete: "cascade" }),
-		categoryId: uuid("category-id"), // Para hierarquia de categorias - self reference será adicionada nas relações
-		ownerId: uuid("owner-id")
+		categoryId: uuid("category_id"), // Para hierarquia de categorias - self reference será adicionada nas relações
+		ownerId: uuid("owner_id")
 			.notNull()
 			.references(() => users.id),
 	},

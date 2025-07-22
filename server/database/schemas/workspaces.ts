@@ -13,10 +13,10 @@ export const workspaces = pgTable(
 	{
 		id: uuid("id").primaryKey().defaultRandom(),
 		name: varchar("name", { length: 255 }).notNull().unique(),
-		createdAt: timestamp("created-at").defaultNow().notNull(),
-		updatedAt: timestamp("updated-at").defaultNow().notNull(),
-		deletedAt: timestamp("deleted-at"),
-		ownerId: uuid("owner-id")
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+		deletedAt: timestamp("deleted_at"),
+		ownerId: uuid("owner_id")
 			.notNull()
 			.references(() => users.id),
 	},

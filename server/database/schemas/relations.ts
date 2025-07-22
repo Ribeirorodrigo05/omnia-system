@@ -1,13 +1,13 @@
 import { relations } from "drizzle-orm";
-import { users } from "./users";
-import { workspaces } from "./workspaces";
-import { spaces } from "./spaces";
 import { categories } from "./categories";
-import { tasks } from "./tasks";
-import { workspaceMembers } from "./workspace-members";
-import { spaceMembers } from "./space-members";
 import { categoryMembers } from "./category-members";
 import { comments } from "./comments";
+import { spaceMembers } from "./space-members";
+import { spaces } from "./spaces";
+import { tasks } from "./tasks";
+import { users } from "./users";
+import { workspaceMembers } from "./workspace-members";
+import { workspaces } from "./workspaces";
 
 // Users Relations
 export const usersRelations = relations(users, ({ many }) => ({
