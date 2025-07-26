@@ -1,3 +1,11 @@
+--- 
+applyTo: copilot-database
+name: Copilot Database Instructions
+description: Instructions for creating database schemas and configuring Drizzle ORM in Omnia.
+version: 1.0
+author: Omnia Team
+---
+
 ## Creating instructions for database schema creation and Drizzle configuration
 
 ## System folder architecture

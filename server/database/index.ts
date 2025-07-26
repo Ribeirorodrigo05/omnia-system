@@ -12,29 +12,29 @@ import * as workspaceMembersSchema from "./schemas/workspace-members";
 import * as workspacesSchema from "./schemas/workspaces";
 
 config({
-	path: "./.env",
+  path: "./.env",
 });
 
 export const schemas = {
-	...usersSchema,
-	...workspacesSchema,
-	...spacesSchema,
-	...categoriesSchema,
-	...tasksSchema,
-	...workspaceMembersSchema,
-	...spaceMembersSchema,
-	...categoryMembersSchema,
-	...commentsSchema,
-	...relationsSchema,
+  ...usersSchema,
+  ...workspacesSchema,
+  ...spacesSchema,
+  ...categoriesSchema,
+  ...tasksSchema,
+  ...workspaceMembersSchema,
+  ...spaceMembersSchema,
+  ...categoryMembersSchema,
+  ...commentsSchema,
+  ...relationsSchema,
 };
 
 function createDrizzleConfig() {
-	return {
-		schema: schemas,
-	};
+  return {
+    schema: schemas,
+  };
 }
 
 export const db = drizzle(
-	process.env["DATABASE_URL"] || "postgres://user:password@localhost:5432/mydb",
-	createDrizzleConfig(),
+  process.env["DATABASE_URL"] || "postgres://user:password@localhost:5432/mydb",
+  createDrizzleConfig(),
 );
