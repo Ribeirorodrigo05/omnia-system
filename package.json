@@ -11,7 +11,8 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "lint": "biome format",
-    "lint:fix": "biome check --fix"
+    "lint:fix": "biome check --fix",
+    "cy:open": "cypress open"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
@@ -44,6 +45,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cypress": "^14.5.3",
     "drizzle-kit": "^0.31.1",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
