@@ -49,15 +49,7 @@
           "level": "error"
         }
       },
-      "nursery": {
-        "useSortedClasses": {
-          "fix": "safe",
-          "level": "error",
-          "options": {
-            "functions": ["clsx", "cva", "tw"]
-          }
-        }
-      },
+
       "performance": {
         "recommended": true
       },

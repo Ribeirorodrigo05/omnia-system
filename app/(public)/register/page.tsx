@@ -99,34 +99,30 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 backdrop-blur-sm">
+      <Card className="w-full max-w-md">
         <CardHeader className="space-y-4 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-600">
-            <Lock className="h-8 w-8 text-white" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary">
+            <Lock className="h-8 w-8 text-primary-foreground" />
           </div>
           <div>
-            <CardTitle className="font-bold text-2xl text-white">
-              Bem-vindo
-            </CardTitle>
-            <CardDescription className="text-slate-400">
-              Crie sua conta para começar
-            </CardDescription>
+            <CardTitle className="font-bold text-2xl">Bem-vindo</CardTitle>
+            <CardDescription>Crie sua conta para começar</CardDescription>
           </div>
         </CardHeader>
 
         <CardContent className="space-y-6">
           {/* Error Messages */}
           {error.length > 0 && (
-            <div className="space-y-2 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
+            <div className="space-y-2 rounded-lg border border-destructive/20 bg-destructive/10 p-4">
               <div className="flex items-center space-x-2">
-                <AlertCircle className="h-4 w-4 text-red-400" />
-                <span className="font-medium text-red-400 text-sm">
+                <AlertCircle className="h-4 w-4 text-destructive" />
+                <span className="font-medium text-destructive text-sm">
                   Verifique os seguintes erros:
                 </span>
               </div>
               <ul className="space-y-1">
                 {error.map((err) => (
-                  <li key={err} className="ml-6 text-red-300 text-sm">
+                  <li key={err} className="ml-6 text-destructive/80 text-sm">
                     • {err}
                   </li>
                 ))}
@@ -137,11 +133,9 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name Field */}
             <div className="space-y-2">
-              <Label htmlFor="fullName" className="text-slate-300">
-                Nome completo
-              </Label>
+              <Label htmlFor="fullName">Nome completo</Label>
               <div className="relative">
-                <User className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-slate-400" />
+                <User className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-muted-foreground" />
                 <Input
                   id="fullName"
                   type="text"
@@ -151,7 +145,7 @@ export default function RegisterPage() {
                     setFullName(e.target.value);
                     clearErrors();
                   }}
-                  className="border-slate-600 bg-slate-700/50 pl-10 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
+                  className="pl-10"
                   required
                   data-testid="fullname-input"
                 />
@@ -160,11 +154,9 @@ export default function RegisterPage() {
 
             {/* Email Field */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-300">
-                Email
-              </Label>
+              <Label htmlFor="email">Email</Label>
               <div className="relative">
-                <Mail className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-slate-400" />
+                <Mail className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
@@ -174,22 +166,18 @@ export default function RegisterPage() {
                     setEmail(e.target.value);
                     clearErrors();
                   }}
-                  className="border-slate-600 bg-slate-700/50 pl-10 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
+                  className="pl-10"
                   required
                   data-testid="email-input"
                 />
               </div>
             </div>
 
-            {/* Phone Field */}
-
             {/* Password Field */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-300">
-                Senha
-              </Label>
+              <Label htmlFor="password">Senha</Label>
               <div className="relative">
-                <Lock className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-slate-400" />
+                <Lock className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-muted-foreground" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -199,14 +187,14 @@ export default function RegisterPage() {
                     setPassword(e.target.value);
                     clearErrors();
                   }}
-                  className="border-slate-600 bg-slate-700/50 pr-10 pl-10 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
+                  className="pr-10 pl-10"
                   required
                   data-testid="password-input"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="-translate-y-1/2 absolute top-1/2 right-3 transform text-slate-400 transition-colors hover:text-white"
+                  className="-translate-y-1/2 absolute top-1/2 right-3 transform text-muted-foreground transition-colors hover:text-foreground"
                   data-testid="toggle-password-visibility"
                 >
                   {showPassword ? (
@@ -220,11 +208,9 @@ export default function RegisterPage() {
 
             {/* Confirm Password Field */}
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-slate-300">
-                Confirmar senha
-              </Label>
+              <Label htmlFor="confirmPassword">Confirmar senha</Label>
               <div className="relative">
-                <Lock className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-slate-400" />
+                <Lock className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-muted-foreground" />
                 <Input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
@@ -234,14 +220,14 @@ export default function RegisterPage() {
                     setConfirmPassword(e.target.value);
                     clearErrors();
                   }}
-                  className="border-slate-600 bg-slate-700/50 pr-10 pl-10 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
+                  className="pr-10 pl-10"
                   required
                   data-testid="confirm-password-input"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="-translate-y-1/2 absolute top-1/2 right-3 transform text-slate-400 transition-colors hover:text-white"
+                  className="-translate-y-1/2 absolute top-1/2 right-3 transform text-muted-foreground transition-colors hover:text-foreground"
                   data-testid="toggle-confirm-password-visibility"
                 >
                   {showConfirmPassword ? (
@@ -262,17 +248,17 @@ export default function RegisterPage() {
                   setAcceptTerms(checked === true);
                   clearErrors();
                 }}
-                className="mt-0.5 border-slate-600 data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600"
+                className="mt-0.5"
                 data-testid="terms-checkbox"
               />
               <Label
                 htmlFor="terms"
-                className="cursor-pointer text-slate-400 text-sm leading-relaxed"
+                className="cursor-pointer text-muted-foreground text-sm leading-relaxed"
               >
                 Aceito os{" "}
                 <Link
                   href="/terms"
-                  className="text-blue-400 transition-colors hover:text-blue-300"
+                  className="text-primary transition-colors hover:text-primary/80"
                   data-testid="terms-link"
                 >
                   termos de uso
@@ -280,7 +266,7 @@ export default function RegisterPage() {
                 e{" "}
                 <Link
                   href="/privacy"
-                  className="text-blue-400 transition-colors hover:text-blue-300"
+                  className="text-primary transition-colors hover:text-primary/80"
                   data-testid="privacy-link"
                 >
                   política de privacidade
@@ -291,7 +277,7 @@ export default function RegisterPage() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-blue-600 py-3 font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full py-3 font-medium"
               data-testid="register-submit-button"
               disabled={
                 isLoading ||
@@ -305,7 +291,7 @@ export default function RegisterPage() {
               {isLoading ? (
                 <div className="flex items-center justify-center space-x-2">
                   <svg
-                    className="h-4 w-4 animate-spin text-white"
+                    className="h-4 w-4 animate-spin"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -336,11 +322,11 @@ export default function RegisterPage() {
 
           {/* Login Link */}
           <div className="mt-4 text-center">
-            <p className="text-slate-400 text-sm">
+            <p className="text-muted-foreground text-sm">
               Já tem uma conta?{" "}
               <Link
                 href="/login"
-                className="font-medium text-blue-400 transition-colors hover:text-blue-300"
+                className="font-medium text-primary transition-colors hover:text-primary/80"
                 data-testid="login-link"
               >
                 Entre aqui
@@ -350,9 +336,9 @@ export default function RegisterPage() {
 
           {/* Divider */}
           <div className="relative mt-6">
-            <Separator className="bg-slate-600" />
+            <Separator />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="bg-slate-800 px-3 text-slate-400 text-sm">
+              <span className=" px-3 text-muted-foreground text-sm">
                 OU CADASTRE-SE COM
               </span>
             </div>
@@ -364,7 +350,6 @@ export default function RegisterPage() {
               type="button"
               variant="outline"
               onClick={handleGoogleRegister}
-              className="border-slate-600 bg-slate-700/50 text-white transition-colors hover:bg-slate-700"
               data-testid="google-register-button"
             >
               <svg
@@ -396,7 +381,6 @@ export default function RegisterPage() {
               type="button"
               variant="outline"
               onClick={handleFacebookRegister}
-              className="border-slate-600 bg-slate-700/50 text-white transition-colors hover:bg-slate-700"
               data-testid="facebook-register-button"
             >
               <svg
@@ -414,7 +398,7 @@ export default function RegisterPage() {
 
           {/* Footer */}
           <div className="text-center">
-            <p className="text-slate-500 text-xs">
+            <p className="text-muted-foreground/60 text-xs">
               © 2024 Sua Empresa. Todos os direitos reservados.
             </p>
           </div>

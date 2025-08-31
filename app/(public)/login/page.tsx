@@ -2,6 +2,7 @@
 
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,47 +16,59 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { LoginSchema, validateLogin } from "@/server/validators/login-validation";
-
+import {
+  type LoginSchema,
+  validateLogin,
+} from "@/server/validators/login-validation";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const userData: LoginSchema = {
       email,
       password,
-      rememberMe
+      rememberMe,
     };
 
     const validationResult = validateLogin(userData);
     if (!validationResult.success) {
-      console.log("Validation errors:", validationResult.error.flatten().fieldErrors);
+      console.log(
+        "Validation errors:",
+        validationResult.error.flatten().fieldErrors,
+      );
+      setIsLoading(false);
       return;
     }
 
-    fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Login failed");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Login successful:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
       });
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+      console.log("Login successful:", data);
+      router.push("/home");
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLogin = () => {};
@@ -64,18 +77,16 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 backdrop-blur-sm">
+      <Card className="w-full max-w-md">
         <CardHeader className="space-y-4 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-600">
-            <Lock className="h-8 w-8 text-white" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary">
+            <Lock className="h-8 w-8 text-primary-foreground" />
           </div>
           <div>
-            <CardTitle className="font-bold text-2xl text-white">
+            <CardTitle className="font-bold text-2xl">
               Bem-vindo de volta
             </CardTitle>
-            <CardDescription className="text-slate-400">
-              Entre na sua conta para continuar
-            </CardDescription>
+            <CardDescription>Entre na sua conta para continuar</CardDescription>
           </div>
         </CardHeader>
 
@@ -83,11 +94,9 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Field */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-300">
-                Email
-              </Label>
+              <Label htmlFor="email">Email</Label>
               <div className="relative">
-                <Mail className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-slate-400" />
+                <Mail className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
@@ -96,7 +105,7 @@ export default function LoginPage() {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setEmail(e.target.value)
                   }
-                  className="border-slate-600 bg-slate-700/50 pl-10 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
+                  className="pl-10"
                   required
                   data-testid="email-input"
                 />
@@ -105,11 +114,9 @@ export default function LoginPage() {
 
             {/* Password Field */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-300">
-                Senha
-              </Label>
+              <Label htmlFor="password">Senha</Label>
               <div className="relative">
-                <Lock className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-slate-400" />
+                <Lock className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-muted-foreground" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -118,14 +125,14 @@ export default function LoginPage() {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setPassword(e.target.value)
                   }
-                  className="border-slate-600 bg-slate-700/50 pr-10 pl-10 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
+                  className="pr-10 pl-10"
                   required
                   data-testid="password-input"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="-translate-y-1/2 absolute top-1/2 right-3 transform text-slate-400 transition-colors hover:text-white"
+                  className="-translate-y-1/2 absolute top-1/2 right-3 transform text-muted-foreground transition-colors hover:text-foreground"
                   data-testid="toggle-password-visibility"
                 >
                   {showPassword ? (
@@ -144,19 +151,18 @@ export default function LoginPage() {
                   id="remember"
                   checked={rememberMe}
                   onCheckedChange={(checked: boolean) => setRememberMe(checked)}
-                  className="border-slate-600 data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600"
                   data-testid="remember-me-checkbox"
                 />
                 <Label
                   htmlFor="remember"
-                  className="cursor-pointer text-slate-400 text-sm"
+                  className="cursor-pointer text-muted-foreground text-sm"
                 >
                   Lembrar de mim
                 </Label>
               </div>
               <Link
                 href="/forgot-password"
-                className="text-blue-400 text-sm transition-colors hover:text-blue-300"
+                className="text-primary text-sm transition-colors hover:text-primary/80"
                 data-testid="forgot-password-link"
               >
                 Esqueceu a senha?
@@ -166,20 +172,49 @@ export default function LoginPage() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-blue-600 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+              className="w-full py-3 font-medium"
               data-testid="login-submit-button"
+              disabled={isLoading}
             >
-              Entrar
+              {isLoading ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <svg
+                    className="h-4 w-4 animate-spin"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-label="Loading"
+                  >
+                    <title>Loading</title>
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  <span>Entrando...</span>
+                </div>
+              ) : (
+                "Entrar"
+              )}
             </Button>
           </form>
 
           {/* Register Link */}
           <div className="mt-4 text-center">
-            <p className="text-slate-400 text-sm">
+            <p className="text-muted-foreground text-sm">
               Não tem uma conta?{" "}
               <Link
                 href="/register"
-                className="font-medium text-blue-400 transition-colors hover:text-blue-300"
+                className="font-medium text-primary transition-colors hover:text-primary/80"
                 data-testid="register-link"
               >
                 Crie uma conta
@@ -189,9 +224,9 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="relative mt-6">
-            <Separator className="bg-slate-600" />
+            <Separator />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="bg-slate-800 px-3 text-slate-400 text-sm">
+              <span className="px-3 text-muted-foreground text-sm">
                 OU CONTINUE COM
               </span>
             </div>
@@ -203,7 +238,6 @@ export default function LoginPage() {
               type="button"
               variant="outline"
               onClick={handleGoogleLogin}
-              className="border-slate-600 bg-slate-700/50 text-white transition-colors hover:bg-slate-700"
               data-testid="google-login-button"
             >
               <svg
@@ -235,7 +269,6 @@ export default function LoginPage() {
               type="button"
               variant="outline"
               onClick={handleFacebookLogin}
-              className="border-slate-600 bg-slate-700/50 text-white transition-colors hover:bg-slate-700"
               data-testid="facebook-login-button"
             >
               <svg
@@ -253,7 +286,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <div className="text-center">
-            <p className="text-slate-500 text-xs">
+            <p className="text-muted-foreground/60 text-xs">
               © 2024 Sua Empresa. Todos os direitos reservados.
             </p>
           </div>

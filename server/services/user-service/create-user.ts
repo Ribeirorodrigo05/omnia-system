@@ -36,3 +36,8 @@ export const createUser = async (data: RegisterValidationSchema) => {
 
   // use bcrypt or another hashing library to hash the password
 };
+
+export const getUserWorkspaces = async (userId: string) => {
+  try {
+  } catch (error: unknown) {}
+};

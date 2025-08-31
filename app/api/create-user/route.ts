@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { createUser } from "@/server/services/users-service/create-user";
+import { createUser } from "@/server/services/user-service/create-user";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const data = await request.json();
