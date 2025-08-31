@@ -60,7 +60,7 @@ Padrões de projeto
 - Priorize a legibilidade e clareza do código SEMPRE.
 - Serviços que manipulam dados devem ser desacoplados da lógica de apresentação.
 - Regra de negócio sempre deve ser localizada no service
-- Lógica do componente deve ser que precisam de requisção devem ser feitas em um custom hook.
+- Lógica do componente deve ser que precisam de requisção devem ser feitas em um custom hook. exemplo, o fetch deve sempre ser feito em um custom hook.
 - Componentes devem ser testáveis e ter cobertura de testes.
 - Todo service deve ser acompanhado de testes automatizados. (vitest)
 - Repositórios devem ser utilizar "import 'server-only'" para garantir que o código seja executado apenas no servidor e segredos não sejam expostos.
@@ -68,3 +68,4 @@ Padrões de projeto
 - Para o frontend utilize playwright para testes automatizados.
 - teste e2e com playwright sempre deve testar o caminho feliz.
 - service sempre devem ser "use serve"
+- 

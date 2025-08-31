@@ -1,27 +1,22 @@
 "use client";
 
 import {
-  BarChart3,
-  Bitcoin,
-  Briefcase,
   ChevronDown,
   ChevronUp,
-  Clock,
-  FolderOpen,
-  Inbox,
-  LayoutGrid,
   Menu,
   Settings,
-  ShoppingCart,
-  Store,
-  Users,
   LogOut,
+  Layers,
+  Plus,
+  Check,
+  X,
 } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import {
@@ -31,6 +26,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSpaces } from "../../_hooks/use-spaces";
+import { useCreateSpace } from "../../_hooks/use-create-space";
+import { createSpaceSchema } from "@/server/validators/space-validation";
 
 interface MenuItem {
   id: string;
@@ -43,12 +41,58 @@ interface MenuItem {
 
 interface SidebarProps {
   className?: string;
+  workspaceId?: string;
 }
 
-export function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ className, workspaceId }: SidebarProps) {
   const [isDashboardsExpanded, setIsDashboardsExpanded] = useState(true);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isSpacesExpanded, setIsSpacesExpanded] = useState(true);
+  const [isAddingSpace, setIsAddingSpace] = useState(false);
+  const [spaceName, setSpaceName] = useState("");
+  const [validationError, setValidationError] = useState<string | null>(null);
+
   const router = useRouter();
+  const { spaces, loading, refetch } = useSpaces(workspaceId || null);
+  const { createSpace, isCreating, error: createError } = useCreateSpace();
+
+  const handleCreateSpace = async () => {
+    if (!workspaceId || !spaceName.trim()) return;
+
+    setValidationError(null);
+
+    const validation = createSpaceSchema.safeParse({
+      name: spaceName,
+      workspaceId,
+    });
+
+    if (!validation.success) {
+      setValidationError(validation.error.errors[0].message);
+      return;
+    }
+
+    const newSpace = await createSpace(validation.data);
+
+    if (newSpace) {
+      setSpaceName("");
+      setIsAddingSpace(false);
+      setValidationError(null);
+      refetch();
+    }
+  };
+
+  const handleCancelAddSpace = () => {
+    setIsAddingSpace(false);
+    setSpaceName("");
+    setValidationError(null);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleCreateSpace();
+    } else if (e.key === "Escape") {
+      handleCancelAddSpace();
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -186,6 +230,130 @@ export function Sidebar({ className }: SidebarProps) {
                 );
               })}
             </div>
+          )}
+
+          {/* Spaces Section */}
+          {workspaceId && (
+            <>
+              <div className="mb-4 mt-6">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-between p-2 text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-accent"
+                  onClick={() => setIsSpacesExpanded(!isSpacesExpanded)}
+                >
+                  <span>Spaces</span>
+                  {isSpacesExpanded ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+
+              {isSpacesExpanded && (
+                <div className="space-y-1">
+                  {loading ? (
+                    <div className="p-3 text-center text-sm text-muted-foreground">
+                      Loading spaces...
+                    </div>
+                  ) : spaces.length > 0 ? (
+                    spaces.map((space) => (
+                      <Button
+                        key={space.id}
+                        variant="ghost"
+                        className="group w-full justify-start p-3 text-left hover:bg-accent"
+                        onClick={() =>
+                          router.push(
+                            `/workspace/${workspaceId}/space/${space.id}`,
+                          )
+                        }
+                      >
+                        <div className="flex items-center gap-3">
+                          <Layers className="h-5 w-5 text-primary" />
+                          <span className="font-medium">{space.name}</span>
+                        </div>
+                      </Button>
+                    ))
+                  ) : (
+                    <div className="space-y-2">
+                      <div className="p-3 text-center text-sm text-muted-foreground">
+                        No spaces found
+                      </div>
+                      {!isAddingSpace && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full"
+                          onClick={() => setIsAddingSpace(true)}
+                          data-testid="add-space-button"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Space
+                        </Button>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Add Space Form */}
+                  {isAddingSpace && (
+                    <div className="space-y-2 border-t pt-2">
+                      <div className="flex gap-1">
+                        <Input
+                          placeholder="Space name"
+                          value={spaceName}
+                          onChange={(e) => setSpaceName(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                          disabled={isCreating}
+                          className="text-xs"
+                          data-testid="space-name-input"
+                          autoFocus
+                        />
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={handleCreateSpace}
+                          disabled={isCreating || !spaceName.trim()}
+                          data-testid="confirm-space-button"
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={handleCancelAddSpace}
+                          disabled={isCreating}
+                          data-testid="cancel-space-button"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      {(validationError || createError) && (
+                        <p
+                          className="text-xs text-destructive px-2"
+                          data-testid="space-error-message"
+                        >
+                          {validationError || createError}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Add Space Button for when there are existing spaces */}
+                  {spaces.length > 0 && !isAddingSpace && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full mt-2"
+                      onClick={() => setIsAddingSpace(true)}
+                      data-testid="add-space-button"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Space
+                    </Button>
+                  )}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

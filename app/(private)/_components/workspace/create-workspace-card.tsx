@@ -9,13 +9,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useCreateWorkspace } from "../../_hooks/use-create-workspace";
+import { useState } from "react";
+import { createWorkspaceSchema } from "@/server/validators/workspace-validation";
 
 export function CreateWorkspaceCard() {
   const { createWorkspace, isCreating, error } = useCreateWorkspace();
+  const [workspaceName, setWorkspaceName] = useState("");
+  const [validationError, setValidationError] = useState<string | null>(null);
 
-  const handleCreateWorkspace = () => {
-    createWorkspace(); // This will navigate to creation page
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setValidationError(null);
+
+    const validation = createWorkspaceSchema.safeParse({ name: workspaceName });
+
+    if (!validation.success) {
+      setValidationError(validation.error.errors[0].message);
+      return;
+    }
+
+    await createWorkspace(validation.data);
   };
 
   return (
@@ -36,18 +52,41 @@ export function CreateWorkspaceCard() {
           </div>
         </CardHeader>
 
-        <CardContent className="text-center space-y-4">
-          {error && <p className="text-destructive text-sm">{error}</p>}
+        <CardContent className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="workspace-name">Nome do workspace</Label>
+              <Input
+                id="workspace-name"
+                type="text"
+                placeholder="Digite o nome do workspace"
+                value={workspaceName}
+                onChange={(e) => setWorkspaceName(e.target.value)}
+                disabled={isCreating}
+                data-testid="workspace-name-input"
+              />
+            </div>
 
-          <Button
-            onClick={handleCreateWorkspace}
-            className="w-full"
-            size="lg"
-            disabled={isCreating}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {isCreating ? "Criando..." : "Criar workspace"}
-          </Button>
+            {(validationError || error) && (
+              <p
+                className="text-destructive text-sm"
+                data-testid="error-message"
+              >
+                {validationError || error}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={isCreating || !workspaceName.trim()}
+              data-testid="create-workspace-button"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              {isCreating ? "Criando..." : "Criar workspace"}
+            </Button>
+          </form>
         </CardContent>
       </Card>
     </div>

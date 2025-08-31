@@ -1,49 +1,52 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { CreateWorkspaceSchema } from "@/server/validators/workspace-validation";
+import type { CreateSpaceSchema } from "@/server/validators/space-validation";
 
-export function useCreateWorkspace() {
+export function useCreateSpace() {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
-  const createWorkspace = async (workspaceData: CreateWorkspaceSchema) => {
+  const createSpace = async (spaceData: CreateSpaceSchema) => {
     setIsCreating(true);
     setError(null);
 
     try {
-      const response = await fetch("/api/workspace", {
+      const response = await fetch("/api/spaces/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(workspaceData),
+        body: JSON.stringify(spaceData),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || "Erro ao criar workspace");
-        return;
+        setError(data.error || "Erro ao criar space");
+        return null;
       }
 
       if (data.success) {
-        router.refresh();
+        return data.space;
       } else {
-        setError(data.error || "Erro ao criar workspace");
+        setError(data.error || "Erro ao criar space");
+        return null;
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro interno");
+      return null;
     } finally {
       setIsCreating(false);
     }
   };
 
+  const clearError = () => setError(null);
+
   return {
-    createWorkspace,
+    createSpace,
     isCreating,
     error,
+    clearError,
   };
 }
