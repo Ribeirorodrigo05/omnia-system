@@ -1,6 +1,19 @@
-import { index, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+  index,
+  pgEnum,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { spaces } from "./spaces";
 import { users } from "./users";
+
+export const categoryTypeEnum = pgEnum("category_type", [
+  "LIST",
+  "SPRINT",
+  "FOLDER",
+]);
 
 export const categories = pgTable(
   "categories",
@@ -10,7 +23,7 @@ export const categories = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
     deletedAt: timestamp("deleted_at"),
-    type: varchar("type", { length: 255 }).notNull(),
+    type: categoryTypeEnum("type").notNull(),
     spaceId: uuid("space_id")
       .notNull()
       .references(() => spaces.id, { onDelete: "cascade" }),

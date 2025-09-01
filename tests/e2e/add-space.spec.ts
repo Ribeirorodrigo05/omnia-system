@@ -71,4 +71,22 @@ test.describe("Add Space", () => {
       "apenas letras, números",
     );
   });
+
+  test("should navigate to space when clicked", async ({ page }) => {
+    await page.goto("/workspace/test-workspace-id");
+
+    // Assuming there's an existing space
+    await page.getByText("My Space").click();
+
+    await expect(page.url()).toContain("/workspace/test-workspace-id/space/");
+  });
+
+  test("should show add space button even when spaces exist", async ({
+    page,
+  }) => {
+    await page.goto("/workspace/test-workspace-id");
+
+    // The Add Space button should always be visible, regardless of existing spaces
+    await expect(page.getByTestId("add-space-button")).toBeVisible();
+  });
 });
