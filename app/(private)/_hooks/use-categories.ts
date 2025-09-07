@@ -186,3 +186,50 @@ export function useRenameCategory() {
     error,
   };
 }
+
+export function useDeleteCategory() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const deleteCategory = async (categoryId: string, spaceId: string) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const response = await fetch(`/api/categories/${categoryId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          spaceId,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Erro ao deletar categoria");
+      }
+
+      return {
+        success: true,
+      };
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro desconhecido";
+      setError(errorMessage);
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    deleteCategory,
+    isLoading,
+    error,
+  };
+}

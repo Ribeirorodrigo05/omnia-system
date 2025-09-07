@@ -11,6 +11,7 @@ import {
   FolderPlus,
   Check,
   X,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +44,7 @@ interface SpaceItemProps {
     spaceId: string,
     categoryType: "FOLDER" | "LIST" | "SPRINT",
   ) => void;
+  onDeleteSpace: (spaceId: string) => void;
 }
 
 export function SpaceItem({
@@ -59,6 +61,7 @@ export function SpaceItem({
   onRenameValueChange,
   onRenameKeyDown,
   onOpenCategoryDialog,
+  onDeleteSpace,
 }: SpaceItemProps) {
   const router = useRouter();
 
@@ -146,6 +149,15 @@ export function SpaceItem({
               >
                 <Edit className="mr-2 h-4 w-4" />
                 Renomear
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => onDeleteSpace(space.id)}
+                className="text-destructive focus:text-destructive"
+                data-testid={`delete-space-${space.id}`}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Deletar
               </DropdownMenuItem>
 
               <DropdownMenuSub>

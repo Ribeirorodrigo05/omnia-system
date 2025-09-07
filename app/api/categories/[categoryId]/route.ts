@@ -2,6 +2,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { renameCategory } from "@/server/services/category-service/category-operations";
+import { deleteCategory } from "@/server/services/category-service/delete-category";
+import { getCurrentUser } from "@/server/services/auth/get-current-user";
+import { db } from "@/server/database";
+import { workspaces } from "@/server/database/schemas/workspaces";
+import { spaces } from "@/server/database/schemas/spaces";
+import { categories } from "@/server/database/schemas/categories";
+import { eq } from "drizzle-orm";
 
 const renameCategorySchema = z.object({
   name: z
@@ -39,6 +46,65 @@ export async function PATCH(
     return NextResponse.json(result.data);
   } catch (error) {
     console.error("Error in PATCH /api/categories/[categoryId]:", error);
+    return NextResponse.json(
+      { error: "Erro interno do servidor" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<RouteParams> },
+) {
+  try {
+    const { categoryId } = await params;
+    const userId = await getCurrentUser();
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 },
+      );
+    }
+
+    const body = await request.json();
+    const { spaceId } = body;
+
+    if (!spaceId) {
+      return NextResponse.json(
+        { error: "Space ID is required" },
+        { status: 400 },
+      );
+    }
+
+    // Verificar se a category existe através da cadeia category -> space -> workspace
+    const categoryWithWorkspace = await db
+      .select({
+        workspaceId: workspaces.id,
+      })
+      .from(categories)
+      .innerJoin(spaces, eq(categories.spaceId, spaces.id))
+      .innerJoin(workspaces, eq(spaces.workspaceId, workspaces.id))
+      .where(eq(categories.id, categoryId))
+      .limit(1);
+
+    if (!categoryWithWorkspace.length) {
+      return NextResponse.json(
+        { error: "Category not found" },
+        { status: 404 },
+      );
+    }
+
+    const result = await deleteCategory(categoryId, spaceId, userId);
+
+    if (!result.success) {
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error in DELETE /api/categories/[categoryId]:", error);
     return NextResponse.json(
       { error: "Erro interno do servidor" },
       { status: 500 },

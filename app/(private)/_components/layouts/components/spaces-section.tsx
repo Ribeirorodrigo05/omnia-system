@@ -6,6 +6,8 @@ import { SpaceItem } from "./space-item";
 import { useSpaces } from "../../../_hooks/use-spaces";
 import { useCreateSpace } from "../../../_hooks/use-create-space";
 import { useRenameSpace } from "../../../_hooks/use-rename-space";
+import { useDeleteSpace } from "../../../_hooks/use-delete-space";
+import { DeleteConfirmationDialog } from "../../dialogs/delete-confirmation-dialog";
 import { createSpaceSchema } from "@/server/validators/space-validation";
 import type { Space } from "../types";
 
@@ -27,10 +29,20 @@ export function SpacesSection({
   const [renamingSpaceId, setRenamingSpaceId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
   const [expandedSpaces, setExpandedSpaces] = useState<Set<string>>(new Set());
+  const [deleteDialog, setDeleteDialog] = useState<{
+    isOpen: boolean;
+    spaceId: string;
+    spaceName: string;
+  }>({
+    isOpen: false,
+    spaceId: "",
+    spaceName: "",
+  });
 
   const { spaces, loading, refetch } = useSpaces(workspaceId);
   const { createSpace, isCreating, error: createError } = useCreateSpace();
   const { renameSpace, isRenaming, error: renameError } = useRenameSpace();
+  const { deleteSpace, isDeleting, error: deleteError } = useDeleteSpace();
 
   const handleCreateSpace = async () => {
     if (!workspaceId || !spaceName.trim()) return;
@@ -119,6 +131,31 @@ export function SpacesSection({
     }
   };
 
+  const handleDeleteSpace = (spaceId: string) => {
+    const space = spaces.find((s) => s.id === spaceId);
+    if (!space) return;
+
+    setDeleteDialog({
+      isOpen: true,
+      spaceId,
+      spaceName: space.name,
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!workspaceId || !deleteDialog.spaceId) return;
+
+    const success = await deleteSpace(deleteDialog.spaceId, workspaceId);
+    if (success) {
+      setDeleteDialog({ isOpen: false, spaceId: "", spaceName: "" });
+      refetch();
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteDialog({ isOpen: false, spaceId: "", spaceName: "" });
+  };
+
   const toggleSpaceExpansion = (spaceId: string) => {
     setExpandedSpaces((prev) => {
       const newSet = new Set(prev);
@@ -159,6 +196,7 @@ export function SpacesSection({
                 onRenameValueChange={setRenameValue}
                 onRenameKeyDown={handleRenameKeyDown}
                 onOpenCategoryDialog={onOpenCategoryDialog}
+                onDeleteSpace={handleDeleteSpace}
               />
             </div>
           ))}
@@ -184,14 +222,24 @@ export function SpacesSection({
         onKeyDown={handleKeyDown}
       />
 
-      {renameError && (
+      {deleteError && (
         <p
           className="text-xs text-destructive px-2"
-          data-testid="rename-error-message"
+          data-testid="delete-error-message"
         >
-          {renameError}
+          {deleteError}
         </p>
       )}
+
+      <DeleteConfirmationDialog
+        isOpen={deleteDialog.isOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="Deletar Space"
+        description="Tem certeza que deseja deletar este space? Todos os dados relacionados serão permanentemente removidos."
+        itemName={deleteDialog.spaceName}
+        isDeleting={isDeleting}
+      />
     </div>
   );
 }

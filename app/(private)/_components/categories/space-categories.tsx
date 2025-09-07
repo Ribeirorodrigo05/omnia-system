@@ -22,11 +22,13 @@ import {
   X,
   ChevronRight,
   ChevronDown,
+  Trash2,
 } from "lucide-react";
 import {
   useCategories,
   useSubcategories,
   useRenameCategory,
+  useDeleteCategory,
 } from "../../_hooks/use-categories";
 import { CreateCategoryDialog } from "../dialogs/create-category-dialog";
 import type { Category, CategoryType } from "@/server/types/categories";
@@ -46,6 +48,7 @@ function CategoryItem({
   const [newName, setNewName] = useState(category.name);
   const [isExpanded, setIsExpanded] = useState(false);
   const { renameCategory, isLoading: isRenamingLoading } = useRenameCategory();
+  const { deleteCategory, isLoading: isDeletingLoading } = useDeleteCategory();
   const { subcategories, refetch: refetchSubcategories } = useSubcategories(
     category.id,
   );
@@ -63,6 +66,13 @@ function CategoryItem({
       onCategoryUpdated();
     } else {
       setNewName(category.name);
+    }
+  };
+
+  const handleDelete = async () => {
+    const result = await deleteCategory(category.id, category.spaceId);
+    if (result.success) {
+      onCategoryUpdated();
     }
   };
 
@@ -163,6 +173,14 @@ function CategoryItem({
             <DropdownMenuItem onClick={() => setIsRenaming(true)}>
               <Edit2 className="h-4 w-4 mr-2" />
               Renomear
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={handleDelete}
+              disabled={isDeletingLoading}
+              className="text-red-600 focus:text-red-600"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              {isDeletingLoading ? "Deletando..." : "Deletar"}
             </DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Criar</DropdownMenuSubTrigger>

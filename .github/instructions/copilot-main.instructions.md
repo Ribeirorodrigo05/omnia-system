@@ -62,6 +62,7 @@ The codebase follows a functional programming paradigm, emphasizing the use of p
 - **Consistency**: Follow consistent naming conventions and coding styles throughout the codebase.
 - **Documentation**: Document components, functions, and complex logic to aid future maintenance and collaboration. The documentation should not be in the form of comments in the code. Always create separate documentation files.
 - **Comments**: Never use comments in the code. If you feel the need to add a comment, consider refactoring the code or adding documentation instead.
+- **Repositories**: always use the repository to make a action in database, never use operation with database in service slayer. 
 - **Code Reviews**: Regularly conduct code reviews to ensure code quality and share knowledge among team members.
     - **Code review checklist**:
         - Ensure the code follows the functional programming paradigm.
@@ -80,6 +81,7 @@ The codebase follows a functional programming paradigm, emphasizing the use of p
         - Ensure that all asynchronous code is properly awaited.
         - Ensure not use magic numbers or strings; use constants instead.
         - Ensure that the code is free of any obvious bugs or issues.
+        - Ensure not have a database operation without repository slayer.
 
 
 ### **Behavior to code generation**
