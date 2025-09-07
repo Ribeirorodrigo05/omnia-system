@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Omnia System
 
-## Getting Started
+Sistema de gerenciamento de workspaces e projetos colaborativos.
 
-First, run the development server:
+## 🚀 Tecnologias
+
+### Frontend
+
+- **Next.js 15.3.4** - React framework com App Router
+- **React 19** - Biblioteca UI
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Framework CSS utilitário
+- **shadcn/ui** - Componentes UI acessíveis
+- **Lucide React** - Biblioteca de ícones
+- **Next Themes** - Gerenciamento de temas
+
+### Backend
+
+- **Next.js API Routes** - API REST
+- **PostgreSQL** - Banco de dados relacional
+- **Drizzle ORM** - Query builder e migrations
+- **Neon Database** - PostgreSQL serverless
+
+### Autenticação & Segurança
+
+- **JWT** - Tokens de autenticação
+- **bcrypt** - Hashing de senhas
+- **Middleware** - Proteção de rotas
+
+### Validação
+
+- **Zod** - Schema validation
+- **Drizzle Zod** - Validação de schemas do banco
+
+### Desenvolvimento
+
+- **Biome** - Linter e formatter
+- **Turbopack** - Build tool rápido
+- **TypeScript** - Compilador
+
+### Testes
+
+- **Vitest** - Framework de testes unitários
+- **Playwright** - Testes E2E
+
+## 📁 Estrutura do Projeto
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+├── app/                    # Next.js App Router
+│   ├── (private)/         # Rotas protegidas
+│   ├── (public)/          # Rotas públicas
+│   └── api/               # API Routes
+├── components/            # Componentes compartilhados
+├── lib/                   # Utilitários
+├── server/                # Lógica backend
+│   ├── database/         # Configuração BD
+│   ├── repositories/     # Camada de dados
+│   ├── services/         # Lógica de negócio
+│   └── validators/       # Validações
+└── docs/                 # Documentação
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Scripts Disponíveis
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev          # Desenvolvimento com Turbopack
+npm run build        # Build de produção
+npm run start        # Servidor de produção
+npm run lint         # Linting com Biome
+npm run db:generate  # Gerar migrations Drizzle
+npm run db:migrate   # Executar migrations
+npm run db:push      # Push schema para BD
+npm run db:studio    # Interface Drizzle Studio
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📚 Documentação
 
-## Learn More
+### Fluxos de Funcionalidade
 
-To learn more about Next.js, take a look at the following resources:
+- [🔐 Fluxo de Login e Registro](./docs/auth-flow.md) - Autenticação JWT, validações e segurança
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Próximas Documentações
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [ ] Gerenciamento de Workspaces
+- [ ] Sistema de Spaces e Categories
+- [ ] Gerenciamento de Tarefas
+- [ ] Sistema de Comentários
+- [ ] Integrações e APIs
 
-## Deploy on Vercel
+## 🔧 Configuração
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Variáveis de Ambiente (.env)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```env
+DATABASE_URL=postgresql://...
+JWT_SECRET=your-secret-key
+NODE_ENV=development
+```
+
+### Banco de Dados
+
+1. Instalar dependências: `npm install`
+2. Configurar DATABASE_URL no .env
+3. Gerar schema: `npm run db:generate`
+4. Aplicar migrations: `npm run db:migrate`
+
+## 🚀 Deploy
+
+### Vercel (Recomendado)
+
+1. Conectar repositório no Vercel
+2. Configurar variáveis de ambiente
+3. Deploy automático
+
+### Outros
+
+Compatível com qualquer plataforma que suporte Next.js:
+
+- Netlify
+- Railway
+- DigitalOcean App Platform
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
