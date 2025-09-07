@@ -1,0 +1,16 @@
+tests/
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.next/
+node_modules/
+.git/
+README.md
+*.md
+.vscode/
+.idea/
