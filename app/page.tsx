@@ -1,11 +1,14 @@
-import { redirect } from "next/navigation";
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Omnia System",
-  description: "Sistema de gerenciamento de projetos",
-};
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function HomePage(): never {
-  redirect("/login");
+export default function RootPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/login");
+  }, [router]);
+
+  return null;
 }
