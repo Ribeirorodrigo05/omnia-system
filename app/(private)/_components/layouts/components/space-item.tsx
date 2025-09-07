@@ -169,7 +169,7 @@ export function SpaceItem({
       </div>
 
       {isExpanded && (
-        <div className="ml-8 mt-2 mb-2">
+        <div className=" mt-2 mb-2">
           <SpaceCategories spaceId={space.id} />
         </div>
       )}

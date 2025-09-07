@@ -131,7 +131,7 @@ function CategoryItem({
     <>
       <div
         className="group flex items-center gap-2 px-2 py-1 hover:bg-accent rounded-md"
-        style={{ paddingLeft: `${8 + level * 16}px` }}
+        style={{ paddingLeft: `${8 + level * 4}px` }}
       >
         {subcategories.length > 0 && (
           <Button
@@ -147,7 +147,6 @@ function CategoryItem({
             )}
           </Button>
         )}
-        {subcategories.length === 0 && <div className="w-4" />}
         {getCategoryIcon()}
         <span className="flex-1 text-sm">{category.name}</span>
         <DropdownMenu>
