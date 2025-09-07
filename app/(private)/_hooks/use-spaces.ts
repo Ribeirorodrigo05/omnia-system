@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Space } from "@/server/types/workspace";
 
 export function useSpaces(workspaceId: string | null) {

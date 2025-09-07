@@ -1,8 +1,8 @@
 "use server";
 
-import { db } from "@/server/database";
-import { workspaces, workspaceMembers } from "@/server/database/schemas";
 import { eq, sql } from "drizzle-orm";
+import { db } from "@/server/database";
+import { workspaceMembers, workspaces } from "@/server/database/schemas";
 
 export async function checkUserWorkspace(userId: string) {
   try {

@@ -1,6 +1,6 @@
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
 import { checkUserWorkspace } from "@/server/services/workspace-service/check-user-workspace";
-import { redirect } from "next/navigation";
 
 export default async function HomePage() {
   const userId = await getCurrentUser();

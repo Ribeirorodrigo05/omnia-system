@@ -9,9 +9,7 @@ export default function SpacePage({
       <p className="text-muted-foreground">
         Workspace ID: {params.workspaceId}
       </p>
-      <p className="text-muted-foreground">
-        Space ID: {params.spaceId}
-      </p>
+      <p className="text-muted-foreground">Space ID: {params.spaceId}</p>
       <div className="mt-6">
         <p>Conteúdo do space será implementado aqui.</p>
       </div>

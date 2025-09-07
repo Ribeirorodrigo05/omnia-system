@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Settings, LogOut } from "lucide-react";
+import { LogOut, Menu, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

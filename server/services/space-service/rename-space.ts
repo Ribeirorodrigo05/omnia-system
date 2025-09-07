@@ -1,8 +1,8 @@
 "use server";
 
+import { and, eq } from "drizzle-orm";
 import { db } from "@/server/database";
 import { spaces } from "@/server/database/schemas";
-import { eq, and } from "drizzle-orm";
 
 export async function renameSpace(
   spaceId: string,

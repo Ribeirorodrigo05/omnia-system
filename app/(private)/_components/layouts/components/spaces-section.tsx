@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { createSpaceSchema } from "@/server/validators/space-validation";
+import { useCreateSpace } from "../../../_hooks/use-create-space";
+import { useDeleteSpace } from "../../../_hooks/use-delete-space";
+import { useRenameSpace } from "../../../_hooks/use-rename-space";
+import { useSpaces } from "../../../_hooks/use-spaces";
+import { DeleteConfirmationDialog } from "../../dialogs/delete-confirmation-dialog";
+import type { Space } from "../types";
 import { AddSpaceForm } from "./add-space-form";
 import { SpaceItem } from "./space-item";
-import { useSpaces } from "../../../_hooks/use-spaces";
-import { useCreateSpace } from "../../../_hooks/use-create-space";
-import { useRenameSpace } from "../../../_hooks/use-rename-space";
-import { useDeleteSpace } from "../../../_hooks/use-delete-space";
-import { DeleteConfirmationDialog } from "../../dialogs/delete-confirmation-dialog";
-import { createSpaceSchema } from "@/server/validators/space-validation";
-import type { Space } from "../types";
 
 interface SpacesSectionProps {
   workspaceId: string;

@@ -1,14 +1,14 @@
+import { eq } from "drizzle-orm";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { db } from "@/server/database";
+import { categories } from "@/server/database/schemas/categories";
+import { spaces } from "@/server/database/schemas/spaces";
+import { workspaces } from "@/server/database/schemas/workspaces";
+import { getCurrentUser } from "@/server/services/auth/get-current-user";
 import { renameCategory } from "@/server/services/category-service/category-operations";
 import { deleteCategory } from "@/server/services/category-service/delete-category";
-import { getCurrentUser } from "@/server/services/auth/get-current-user";
-import { db } from "@/server/database";
-import { workspaces } from "@/server/database/schemas/workspaces";
-import { spaces } from "@/server/database/schemas/spaces";
-import { categories } from "@/server/database/schemas/categories";
-import { eq } from "drizzle-orm";
 
 const renameCategorySchema = z.object({
   name: z

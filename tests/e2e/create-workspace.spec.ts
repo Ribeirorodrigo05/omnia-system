@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Create Workspace", () => {
   test("should create workspace with valid name", async ({ page }) => {

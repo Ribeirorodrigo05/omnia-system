@@ -1,5 +1,17 @@
 "use client";
 
+import {
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Edit2,
+  Folder,
+  List,
+  MoreHorizontal,
+  Trash2,
+  X,
+  Zap,
+} from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,26 +24,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import {
-  MoreHorizontal,
-  Folder,
-  List,
-  Zap,
-  Edit2,
-  Check,
-  X,
-  ChevronRight,
-  ChevronDown,
-  Trash2,
-} from "lucide-react";
+import type { Category, CategoryType } from "@/server/types/categories";
 import {
   useCategories,
-  useSubcategories,
-  useRenameCategory,
   useDeleteCategory,
+  useRenameCategory,
+  useSubcategories,
 } from "../../_hooks/use-categories";
 import { CreateCategoryDialog } from "../dialogs/create-category-dialog";
-import type { Category, CategoryType } from "@/server/types/categories";
 
 interface CategoryItemProps {
   category: Category;

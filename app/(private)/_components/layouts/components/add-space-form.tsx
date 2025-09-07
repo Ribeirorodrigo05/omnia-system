@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Check, X } from "lucide-react";
+import { Check, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

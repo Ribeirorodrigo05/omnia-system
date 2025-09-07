@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import type { CreateCategoryDialogState, MenuItem } from "../types";
 
 export function useSidebarActions() {

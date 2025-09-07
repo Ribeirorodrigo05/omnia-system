@@ -1,12 +1,12 @@
+import { eq } from "drizzle-orm";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/server/services/auth/get-current-user";
-import { renameSpace } from "@/server/services/space-service/rename-space";
-import { deleteSpace } from "@/server/services/space-service/delete-space";
-import { createSpaceSchema } from "@/server/validators/space-validation";
 import { db } from "@/server/database";
 import { workspaces } from "@/server/database/schemas/workspaces";
-import { eq } from "drizzle-orm";
+import { getCurrentUser } from "@/server/services/auth/get-current-user";
+import { deleteSpace } from "@/server/services/space-service/delete-space";
+import { renameSpace } from "@/server/services/space-service/rename-space";
+import { createSpaceSchema } from "@/server/validators/space-validation";
 
 export async function PATCH(
   request: NextRequest,

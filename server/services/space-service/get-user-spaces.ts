@@ -1,8 +1,8 @@
 "use server";
 
+import { and, eq, or } from "drizzle-orm";
 import { db } from "@/server/database";
-import { spaces, spaceMembers } from "@/server/database/schemas";
-import { eq, or, and } from "drizzle-orm";
+import { spaceMembers, spaces } from "@/server/database/schemas";
 
 export async function getUserSpaces(userId: string, workspaceId: string) {
   try {

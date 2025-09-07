@@ -1,20 +1,19 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
+  Check,
   ChevronDown,
   ChevronUp,
+  Edit,
+  FolderPlus,
   Layers,
   MoreHorizontal,
-  Edit,
   Plus,
-  FolderPlus,
-  Check,
-  X,
   Trash2,
+  X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +23,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import { SpaceCategories } from "../../categories/space-categories";
 import type { Space } from "../types";
 

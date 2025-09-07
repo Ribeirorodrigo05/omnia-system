@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCreateCategory } from "../../_hooks/use-categories";
 import type { CategoryType } from "@/server/types/categories";
+import { useCreateCategory } from "../../_hooks/use-categories";
 
 interface CreateCategoryDialogProps {
   isOpen: boolean;

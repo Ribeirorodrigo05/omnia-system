@@ -3,8 +3,8 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "../../database";
 import { categories } from "../../database/schemas/categories";
-import { getCurrentUser } from "../auth/get-current-user";
 import type { CreateCategoryRequest } from "../../types/categories";
+import { getCurrentUser } from "../auth/get-current-user";
 
 export async function createCategory(data: CreateCategoryRequest) {
   try {

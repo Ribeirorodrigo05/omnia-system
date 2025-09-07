@@ -1,14 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { CreateCategoryDialog } from "../dialogs/create-category-dialog";
 import {
-  SidebarHeader,
-  UserProfile,
   ExpandableSection,
   MenuItems,
+  SidebarHeader,
   SpacesSection,
+  UserProfile,
 } from "./components";
-import { CreateCategoryDialog } from "../dialogs/create-category-dialog";
 import { useSidebarActions } from "./hooks";
 import type { SidebarProps } from "./types";
 

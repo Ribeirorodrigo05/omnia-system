@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Space Menu Actions", () => {
   test("should show dot menu on hover", async ({ page }) => {

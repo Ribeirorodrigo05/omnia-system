@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createWorkspace } from "@/server/services/workspace-service/create-workspace";
 
 vi.mock("@/server/database", () => ({

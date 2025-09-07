@@ -1,6 +1,7 @@
 "use client";
 
 import { Plus } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,9 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCreateWorkspace } from "../../_hooks/use-create-workspace";
-import { useState } from "react";
 import { createWorkspaceSchema } from "@/server/validators/workspace-validation";
+import { useCreateWorkspace } from "../../_hooks/use-create-workspace";
 
 export function CreateWorkspaceCard() {
   const { createWorkspace, isCreating, error } = useCreateWorkspace();

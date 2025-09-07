@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Category, CategoryType } from "@/server/types/categories";
 
 export function useCategories(spaceId: string) {

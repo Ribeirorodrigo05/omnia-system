@@ -1,7 +1,7 @@
-import { Sidebar } from "./_components/layouts/sidebar";
-import { CreateWorkspaceCard } from "./_components/workspace/create-workspace-card";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
 import { checkUserWorkspace } from "@/server/services/workspace-service/check-user-workspace";
+import { Sidebar } from "./_components/layouts/sidebar";
+import { CreateWorkspaceCard } from "./_components/workspace/create-workspace-card";
 
 interface PrivateLayoutProps {
   children: React.ReactNode;
