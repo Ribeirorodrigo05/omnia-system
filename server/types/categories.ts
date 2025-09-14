@@ -1,19 +1,19 @@
 export type CategoryType = "LIST" | "SPRINT" | "FOLDER";
 
-export interface CreateCategoryRequest {
+export type CreateCategoryRequest = {
   name: string;
   type: CategoryType;
   spaceId: string;
   categoryId?: string;
-}
+};
 
-export interface UpdateCategoryRequest {
+export type UpdateCategoryRequest = {
   name?: string;
   type?: CategoryType;
   categoryId?: string;
-}
+};
 
-export interface Category {
+export type Category = {
   id: string;
   name: string;
   type: CategoryType;
@@ -23,4 +23,4 @@ export interface Category {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
-}
+};

@@ -4,7 +4,6 @@ import { verifyPassword } from "@/server/utils/functions";
 import type { LoginSchema } from "@/server/validators/login-validation";
 
 export const authenticateUser = async ({ email, password }: LoginSchema) => {
-  // Implement authentication logic here
   const user = await findUserByEmail(email);
   if (!user) {
     return { success: false, error: "User not found" };
@@ -15,7 +14,6 @@ export const authenticateUser = async ({ email, password }: LoginSchema) => {
     return { success: false, error: "Invalid password" };
   }
 
-  // generate JWT token
   const token = jwt.sign(
     { userId: user.id },
     process.env.JWT_SECRET as string,

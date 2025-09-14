@@ -1,17 +1,17 @@
-export interface Workspace {
+export type Workspace = {
   id: string;
   name: string;
   role: string;
-}
+};
 
-export interface UserWorkspace {
+export type UserWorkspace = {
   hasWorkspace: boolean;
   workspace: Workspace | null;
-}
+};
 
-export interface Space {
+export type Space = {
   id: string;
   name: string;
   workspaceId: string;
   createdAt: Date;
-}
+};
