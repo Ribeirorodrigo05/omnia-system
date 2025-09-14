@@ -1,0 +1,7 @@
+{
+  "instructions": "Siga as diretrizes do arquivo instrucao.md para desenvolvimento",
+  "files": [
+    "github/copilot-database.instructions.md",
+    "github/copilot-main.instructions.md"
+  ]
+}
