@@ -8,7 +8,6 @@ export const createUser = async (data: RegisterValidationSchema) => {
   try {
     const validation = registerValidation(data);
     if (!validation.success) {
-      console.log("User registration validation failed:", validation.errors);
       return {
         success: false,
         errors: validation.errors,
@@ -34,8 +33,6 @@ export const createUser = async (data: RegisterValidationSchema) => {
       error: (error as Error).message,
     };
   }
-
-  // use bcrypt or another hashing library to hash the password
 };
 
 export const getUserWorkspaces = async (userId: string) => {

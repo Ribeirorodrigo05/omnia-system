@@ -40,10 +40,6 @@ export default function LoginPage() {
 
     const validationResult = validateLogin(userData);
     if (!validationResult.success) {
-      console.log(
-        "Validation errors:",
-        validationResult.error.flatten().fieldErrors,
-      );
       setIsLoading(false);
       return;
     }
@@ -61,8 +57,7 @@ export default function LoginPage() {
         throw new Error("Login failed");
       }
 
-      const data = await response.json();
-      console.log("Login successful:", data);
+      await response.json();
       router.push("/home");
     } catch (error) {
       console.error("Error:", error);

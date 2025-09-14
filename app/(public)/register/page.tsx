@@ -73,7 +73,6 @@ export default function RegisterPage() {
       }
 
       // Sucesso - poderia redirecionar ou mostrar mensagem de sucesso
-      console.log("User created successfully:", data);
     } catch (error) {
       console.error("Error creating user:", error);
       setError(["Erro interno. Tente novamente mais tarde."]);
