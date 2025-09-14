@@ -25,6 +25,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import type { UserWorkspace } from "@/server/services/workspace/get-user-workspace";
 
 // This is sample data.
 const data = {
@@ -156,11 +157,31 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  workspace: UserWorkspace | null;
+  workspaces: UserWorkspace[];
+}
+
+export function AppSidebar({ workspace, workspaces, ...props }: AppSidebarProps) {
+  const teams = workspace
+    ? [
+        {
+          name: workspace.name,
+          logo: GalleryVerticalEnd,
+          plan: workspace.isOwner ? "Owner" : workspace.role,
+        },
+      ]
+    : [];
+
+  const allTeams = workspaces.map((w) => ({
+    name: w.name,
+    logo: GalleryVerticalEnd,
+    plan: w.isOwner ? "Owner" : w.role,
+  }));
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={allTeams.length > 0 ? allTeams : teams} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
