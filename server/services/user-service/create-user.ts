@@ -8,6 +8,7 @@ export const createUser = async (data: RegisterValidationSchema) => {
   try {
     const validation = registerValidation(data);
     if (!validation.success) {
+      console.log("User registration validation failed:", validation.errors);
       return {
         success: false,
         errors: validation.errors,
