@@ -158,11 +158,11 @@ const data = {
 };
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  workspace: UserWorkspace | null;
-  workspaces: UserWorkspace[];
+  workspace?: UserWorkspace | null;
+  workspaces?: UserWorkspace[];
 }
 
-export function AppSidebar({ workspace, workspaces, ...props }: AppSidebarProps) {
+export function AppSidebar({ workspace = null, workspaces = [], ...props }: AppSidebarProps) {
   const teams = workspace
     ? [
         {
