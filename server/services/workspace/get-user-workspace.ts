@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { db } from "@/server/database";
-import { workspaces, workspaceMembers } from "@/server/database/schemas";
+import { workspaceMembers, workspaces } from "@/server/database/schemas";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
 
 export type UserWorkspace = {

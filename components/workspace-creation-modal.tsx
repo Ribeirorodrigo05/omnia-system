@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createWorkspace } from "@/server/services/workspace/create-workspace";
@@ -21,7 +21,7 @@ interface WorkspaceCreationModalProps {
 
 export function WorkspaceCreationModal({
   open,
-  onWorkspaceCreated
+  onWorkspaceCreated,
 }: WorkspaceCreationModalProps) {
   const [workspaceName, setWorkspaceName] = useState("");
   const [isCreating, setIsCreating] = useState(false);
@@ -67,7 +67,8 @@ export function WorkspaceCreationModal({
         <DialogHeader>
           <DialogTitle>Create Your Workspace</DialogTitle>
           <DialogDescription>
-            You need to create a workspace to get started. This will be your main working environment.
+            You need to create a workspace to get started. This will be your
+            main working environment.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleCreateWorkspace} className="space-y-4">
@@ -84,9 +85,7 @@ export function WorkspaceCreationModal({
               minLength={1}
               maxLength={255}
             />
-            {error && (
-              <p className="text-sm text-red-500">{error}</p>
-            )}
+            {error && <p className="text-sm text-red-500">{error}</p>}
           </div>
           <Button
             type="submit"

@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import { ChevronsUpDown, Plus } from "lucide-react";
+import * as React from "react";
 
 import {
   DropdownMenu,
@@ -44,7 +44,9 @@ export function TeamSwitcher({
             </div>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">No Workspace</span>
-              <span className="truncate text-xs">Create one to get started</span>
+              <span className="truncate text-xs">
+                Create one to get started
+              </span>
             </div>
           </SidebarMenuButton>
         </SidebarMenuItem>

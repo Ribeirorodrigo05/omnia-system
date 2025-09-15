@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
-import { WorkspaceCreationModal } from "@/components/workspace-creation-modal";
+import { SpaceCreationModal } from "@/components/space-creation-modal";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,38 +17,70 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { WorkspaceCreationModal } from "@/components/workspace-creation-modal";
+import type { WorkspaceSpace } from "@/server/services/space/get-workspace-spaces";
 import type { UserWorkspace } from "@/server/services/workspace/get-user-workspace";
 
 interface PrivateLayoutWrapperProps {
   children: React.ReactNode;
   initialWorkspace: UserWorkspace | null;
   initialWorkspaces: UserWorkspace[];
+  initialSpaces: WorkspaceSpace[];
 }
 
 export function PrivateLayoutWrapper({
   children,
   initialWorkspace,
   initialWorkspaces,
+  initialSpaces,
 }: PrivateLayoutWrapperProps) {
   const [currentWorkspace, setCurrentWorkspace] = useState(initialWorkspace);
   const [workspaces, setWorkspaces] = useState(initialWorkspaces);
-  const [showModal, setShowModal] = useState(!initialWorkspace);
+  const [spaces, setSpaces] = useState(initialSpaces);
+  const [showWorkspaceModal, setShowWorkspaceModal] = useState(
+    !initialWorkspace,
+  );
+  const [showSpaceModal, setShowSpaceModal] = useState(false);
 
   const handleWorkspaceCreated = useCallback((newWorkspace: UserWorkspace) => {
     setCurrentWorkspace(newWorkspace);
     setWorkspaces((prev) => [...prev, newWorkspace]);
-    setShowModal(false);
+    setShowWorkspaceModal(false);
+  }, []);
+
+  const handleCreateSpace = useCallback(() => {
+    if (currentWorkspace) {
+      setShowSpaceModal(true);
+    }
+  }, [currentWorkspace]);
+
+  const handleSpaceCreated = useCallback((newSpace: WorkspaceSpace) => {
+    setSpaces((prev) => [...prev, newSpace]);
+    setShowSpaceModal(false);
   }, []);
 
   return (
     <>
       <WorkspaceCreationModal
-        open={showModal}
+        open={showWorkspaceModal}
         onWorkspaceCreated={handleWorkspaceCreated}
       />
+      {currentWorkspace && (
+        <SpaceCreationModal
+          open={showSpaceModal}
+          onClose={() => setShowSpaceModal(false)}
+          workspaceId={currentWorkspace.id}
+          onSpaceCreated={handleSpaceCreated}
+        />
+      )}
       <div className="flex min-h-screen">
         <SidebarProvider>
-          <AppSidebar workspace={currentWorkspace} workspaces={workspaces} />
+          <AppSidebar
+            workspace={currentWorkspace}
+            workspaces={workspaces}
+            spaces={spaces}
+            onCreateSpace={handleCreateSpace}
+          />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
               <div className="flex items-center gap-2 px-4">
