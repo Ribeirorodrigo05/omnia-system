@@ -23,8 +23,19 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
     id: string;
     name: string;
     url: string;
+    categories?: Array<{
+      id: string;
+      name: string;
+      type: "LIST" | "SPRINT" | "FOLDER";
+      url: string;
+    }>;
   }>;
   onCreateSpace?: () => void;
+  onRenameSpace?: (spaceId: string, spaceName: string) => void;
+  onDeleteSpace?: (spaceId: string, spaceName: string) => void;
+  onAddMember?: (spaceId: string, spaceName: string) => void;
+  onCreateList?: (spaceId: string) => void;
+  onCreateSprint?: (spaceId: string) => void;
 }
 
 export function AppSidebar({
@@ -32,6 +43,11 @@ export function AppSidebar({
   workspaces = [],
   spaces = [],
   onCreateSpace,
+  onRenameSpace,
+  onDeleteSpace,
+  onAddMember,
+  onCreateList,
+  onCreateSprint,
   ...props
 }: AppSidebarProps) {
   const teams = workspace
@@ -71,7 +87,15 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />
-        <NavProjects projects={spaces} onCreateSpace={onCreateSpace} />
+        <NavProjects
+          projects={spaces}
+          onCreateSpace={onCreateSpace}
+          onRenameSpace={onRenameSpace}
+          onDeleteSpace={onDeleteSpace}
+          onAddMember={onAddMember}
+          onCreateList={onCreateList}
+          onCreateSprint={onCreateSprint}
+        />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
