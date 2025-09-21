@@ -29,7 +29,6 @@ export async function getWorkspaceSpaces(
       return [];
     }
 
-    // Busca spaces do workspace onde o usuário é membro
     const userSpaces = await db
       .select({
         id: spaces.id,
@@ -43,10 +42,10 @@ export async function getWorkspaceSpaces(
         and(
           eq(spaceMembers.userId, userId),
           eq(spaces.workspaceId, workspaceId),
+          isNull(spaces.deletedAt),
         ),
       );
 
-    // Para cada space, busca suas categories
     const spacesWithCategories = await Promise.all(
       userSpaces.map(async (space) => {
         const spaceCategories = await db
@@ -59,8 +58,8 @@ export async function getWorkspaceSpaces(
           .where(
             and(
               eq(categories.spaceId, space.id),
-              isNull(categories.categoryId), // Apenas categorias de primeiro nível
-              isNull(categories.deletedAt), // Não buscar categories deletadas
+              isNull(categories.categoryId),
+              isNull(categories.deletedAt),
             ),
           )
           .orderBy(categories.createdAt);

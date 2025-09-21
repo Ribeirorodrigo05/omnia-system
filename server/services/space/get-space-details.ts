@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/server/database";
 import { spaceMembers, spaces } from "@/server/database/schemas";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
@@ -23,7 +23,6 @@ export async function getSpaceDetails(
       return null;
     }
 
-    // Verifica se o usuário é membro do space e busca os detalhes
     const spaceResult = await db
       .select({
         id: spaces.id,
@@ -34,7 +33,11 @@ export async function getSpaceDetails(
       .from(spaceMembers)
       .innerJoin(spaces, eq(spaceMembers.spaceId, spaces.id))
       .where(
-        and(eq(spaceMembers.spaceId, spaceId), eq(spaceMembers.userId, userId)),
+        and(
+          eq(spaceMembers.spaceId, spaceId),
+          eq(spaceMembers.userId, userId),
+          isNull(spaces.deletedAt),
+        ),
       )
       .limit(1);
 

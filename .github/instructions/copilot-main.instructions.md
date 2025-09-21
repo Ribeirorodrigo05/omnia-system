@@ -62,6 +62,34 @@ The codebase follows a functional programming paradigm, emphasizing the use of p
 - **Consistency**: Follow consistent naming conventions and coding styles throughout the codebase.
 - **Documentation**: Document components, functions, and complex logic to aid future maintenance and collaboration. The documentation should not be in the form of comments in the code. Always create separate documentation files.
 - **Comments**: Never use comments in the code. If you feel the need to add a comment, consider refactoring the code or adding documentation instead.
+- **No Code Comments Rule**: STRICTLY PROHIBITED to add any comments in the code. This includes:
+  - Explanatory comments (// This function does...)
+  - Inline comments (// Não buscar spaces deletados)
+  - Block comments (/* explanation */)
+  - TODO comments (// TODO: fix this)
+  
+  **Bad Example (NEVER do this):**
+  ```typescript
+  // Busca spaces do workspace onde o usuário é membro
+  const userSpaces = await db.select({...})
+    .where(
+      and(
+        eq(spaceMembers.userId, userId),
+        isNull(spaces.deletedAt), // Não buscar spaces deletados
+      ),
+    );
+  ```
+  
+  **Good Example (Always do this):**
+  ```typescript
+  const userSpaces = await db.select({...})
+    .where(
+      and(
+        eq(spaceMembers.userId, userId),
+        isNull(spaces.deletedAt),
+      ),
+    );
+  ```
 - **Repositories**: always use the repository to make a action in database, never use operation with database in service slayer. 
 - **Code Reviews**: Regularly conduct code reviews to ensure code quality and share knowledge among team members.
     - **Code review checklist**:
