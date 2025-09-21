@@ -81,10 +81,7 @@ export async function createSprint(
       .select()
       .from(spaceMembers)
       .where(
-        and(
-          eq(spaceMembers.spaceId, spaceId),
-          eq(spaceMembers.userId, userId)
-        )
+        and(eq(spaceMembers.spaceId, spaceId), eq(spaceMembers.userId, userId)),
       )
       .limit(1);
 
@@ -110,8 +107,8 @@ export async function createSprint(
         and(
           eq(categories.name, name.trim()),
           eq(categories.spaceId, spaceId),
-          eq(categories.type, "SPRINT")
-        )
+          eq(categories.type, "SPRINT"),
+        ),
       )
       .limit(1);
 

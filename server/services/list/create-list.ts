@@ -54,10 +54,7 @@ export async function createList(
       .select()
       .from(spaceMembers)
       .where(
-        and(
-          eq(spaceMembers.spaceId, spaceId),
-          eq(spaceMembers.userId, userId)
-        )
+        and(eq(spaceMembers.spaceId, spaceId), eq(spaceMembers.userId, userId)),
       )
       .limit(1);
 
@@ -76,8 +73,8 @@ export async function createList(
         and(
           eq(categories.name, name.trim()),
           eq(categories.spaceId, spaceId),
-          eq(categories.type, "LIST")
-        )
+          eq(categories.type, "LIST"),
+        ),
       )
       .limit(1);
 

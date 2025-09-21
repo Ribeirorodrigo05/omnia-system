@@ -1,27 +1,31 @@
 "use client";
 
 import {
+  Calendar,
+  ChevronRight,
+  Edit,
   Folder,
+  FolderOpen,
+  List,
   MoreHorizontal,
   Plus,
   Trash2,
-  Edit,
   UserPlus,
-  ChevronRight,
-  List,
-  Calendar,
-  FolderOpen,
 } from "lucide-react";
-
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   SidebarGroup,
@@ -35,11 +39,6 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 
 export function NavProjects({
   projects,
@@ -69,9 +68,6 @@ export function NavProjects({
   onCreateSprint?: (spaceId: string) => void;
 }) {
   const { isMobile } = useSidebar();
-
-  // Debug: log projects to see if categories are being passed
-  console.log("NavProjects - projects:", projects);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -117,9 +113,7 @@ export function NavProjects({
                       <ChevronRight className="ml-auto h-4 w-4" />
                     </DropdownMenuSubTrigger>
                     <DropdownMenuSubContent>
-                      <DropdownMenuItem
-                        onClick={() => onCreateList?.(item.id)}
-                      >
+                      <DropdownMenuItem onClick={() => onCreateList?.(item.id)}>
                         <List className="text-muted-foreground" />
                         <span>List</span>
                       </DropdownMenuItem>
@@ -154,25 +148,24 @@ export function NavProjects({
               </DropdownMenu>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {console.log(`Space ${item.name} has ${item.categories?.length || 0} categories:`, item.categories)}
-                  {item.categories?.length ? (
-                    item.categories.map((category) => (
-                      <SidebarMenuSubItem key={category.id}>
-                        <SidebarMenuSubButton asChild>
-                          <a href={category.url}>
-                            {category.type === "LIST" && <List className="h-4 w-4" />}
-                            {category.type === "SPRINT" && <Calendar className="h-4 w-4" />}
-                            {category.type === "FOLDER" && <FolderOpen className="h-4 w-4" />}
-                            <span>{category.name}</span>
-                          </a>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))
-                  ) : (
-                    <div className="px-4 py-2 text-xs text-muted-foreground">
-                      No categories yet
-                    </div>
-                  )}
+                  {item.categories?.map((category) => (
+                    <SidebarMenuSubItem key={category.id}>
+                      <SidebarMenuSubButton asChild>
+                        <a href={category.url}>
+                          {category.type === "LIST" && (
+                            <List className="h-4 w-4" />
+                          )}
+                          {category.type === "SPRINT" && (
+                            <Calendar className="h-4 w-4" />
+                          )}
+                          {category.type === "FOLDER" && (
+                            <FolderOpen className="h-4 w-4" />
+                          )}
+                          <span>{category.name}</span>
+                        </a>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
                 </SidebarMenuSub>
               </CollapsibleContent>
             </SidebarMenuItem>

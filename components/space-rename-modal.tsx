@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,7 +27,7 @@ export function SpaceRenameModal({
   open,
   onClose,
   space,
-  onSpaceRenamed
+  onSpaceRenamed,
 }: SpaceRenameModalProps) {
   const [spaceName, setSpaceName] = useState(space.name);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -47,7 +47,7 @@ export function SpaceRenameModal({
     try {
       const result = await updateSpace({
         spaceId: space.id,
-        name: spaceName
+        name: spaceName,
       });
 
       if (result.success && result.space) {
@@ -81,7 +81,8 @@ export function SpaceRenameModal({
         <DialogHeader>
           <DialogTitle>Rename Space</DialogTitle>
           <DialogDescription>
-            Change the name of this space. This will update the space name for all members.
+            Change the name of this space. This will update the space name for
+            all members.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleRenameSpace} className="space-y-4">
@@ -102,9 +103,7 @@ export function SpaceRenameModal({
             />
           </div>
 
-          {error && (
-            <p className="text-sm text-red-500">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-500">{error}</p>}
 
           <div className="flex justify-end gap-2">
             <Button

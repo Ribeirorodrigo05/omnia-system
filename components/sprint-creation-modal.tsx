@@ -41,7 +41,7 @@ export function SprintCreationModal({
   open,
   onClose,
   spaceId,
-  onSprintCreated
+  onSprintCreated,
 }: SprintCreationModalProps) {
   const [sprintName, setSprintName] = useState("");
   const [duration, setDuration] = useState<"weekly" | "biweekly">("weekly");
@@ -65,7 +65,7 @@ export function SprintCreationModal({
       const result = await createSprint({
         name: sprintName,
         spaceId,
-        duration
+        duration,
       });
 
       if (result.success && result.sprint) {
@@ -102,7 +102,8 @@ export function SprintCreationModal({
         <DialogHeader>
           <DialogTitle>Create New Sprint</DialogTitle>
           <DialogDescription>
-            Create a new sprint that automatically starts on Monday and ends on Sunday.
+            Create a new sprint that automatically starts on Monday and ends on
+            Sunday.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleCreateSprint} className="space-y-4">
@@ -125,7 +126,9 @@ export function SprintCreationModal({
             <Label htmlFor="sprint-duration">Duration</Label>
             <Select
               value={duration}
-              onValueChange={(value: "weekly" | "biweekly") => setDuration(value)}
+              onValueChange={(value: "weekly" | "biweekly") =>
+                setDuration(value)
+              }
               disabled={isCreating}
             >
               <SelectTrigger>
@@ -139,29 +142,35 @@ export function SprintCreationModal({
           </div>
 
           <div className="rounded-md border p-3 bg-muted/50">
-            <div className="text-sm font-medium mb-2">Sprint Timeline Preview:</div>
+            <div className="text-sm font-medium mb-2">
+              Sprint Timeline Preview:
+            </div>
             <div className="text-sm text-muted-foreground">
-              <div>Start: {previewDates.start.toLocaleDateString('pt-BR', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}</div>
-              <div>End: {previewDates.end.toLocaleDateString('pt-BR', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}</div>
+              <div>
+                Start:{" "}
+                {previewDates.start.toLocaleDateString("pt-BR", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+              <div>
+                End:{" "}
+                {previewDates.end.toLocaleDateString("pt-BR", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
               <div className="mt-1 text-xs">
                 Duration: {duration === "weekly" ? "7" : "14"} days
               </div>
             </div>
           </div>
 
-          {error && (
-            <p className="text-sm text-red-500">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-500">{error}</p>}
 
           <div className="flex justify-end gap-2">
             <Button
@@ -172,10 +181,7 @@ export function SprintCreationModal({
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={isCreating || !sprintName.trim()}
-            >
+            <Button type="submit" disabled={isCreating || !sprintName.trim()}>
               {isCreating ? "Creating..." : "Create Sprint"}
             </Button>
           </div>

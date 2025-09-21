@@ -24,7 +24,7 @@ export function ListCreationModal({
   open,
   onClose,
   spaceId,
-  onListCreated
+  onListCreated,
 }: ListCreationModalProps) {
   const [listName, setListName] = useState("");
   const [isCreating, setIsCreating] = useState(false);
@@ -38,7 +38,7 @@ export function ListCreationModal({
     try {
       const result = await createList({
         name: listName,
-        spaceId
+        spaceId,
       });
 
       if (result.success && result.list) {
@@ -89,9 +89,7 @@ export function ListCreationModal({
               maxLength={255}
             />
           </div>
-          {error && (
-            <p className="text-sm text-red-500">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-500">{error}</p>}
           <div className="flex justify-end gap-2">
             <Button
               type="button"
@@ -101,10 +99,7 @@ export function ListCreationModal({
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={isCreating || !listName.trim()}
-            >
+            <Button type="submit" disabled={isCreating || !listName.trim()}>
               {isCreating ? "Creating..." : "Create List"}
             </Button>
           </div>

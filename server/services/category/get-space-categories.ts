@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/server/database";
 import { categories, spaceMembers } from "@/server/database/schemas";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
@@ -13,7 +13,9 @@ export type SpaceCategory = {
   spaceId: string;
 };
 
-export async function getSpaceCategories(spaceId: string): Promise<SpaceCategory[]> {
+export async function getSpaceCategories(
+  spaceId: string,
+): Promise<SpaceCategory[]> {
   try {
     const userId = await getCurrentUser();
 
@@ -26,10 +28,7 @@ export async function getSpaceCategories(spaceId: string): Promise<SpaceCategory
       .select()
       .from(spaceMembers)
       .where(
-        and(
-          eq(spaceMembers.spaceId, spaceId),
-          eq(spaceMembers.userId, userId)
-        )
+        and(eq(spaceMembers.spaceId, spaceId), eq(spaceMembers.userId, userId)),
       )
       .limit(1);
 
@@ -49,8 +48,9 @@ export async function getSpaceCategories(spaceId: string): Promise<SpaceCategory
       .where(
         and(
           eq(categories.spaceId, spaceId),
-          eq(categories.categoryId, null) // Apenas categorias de primeiro nível
-        )
+          isNull(categories.categoryId), // Apenas categorias de primeiro nível
+          isNull(categories.deletedAt), // Não buscar categories deletadas
+        ),
       )
       .orderBy(categories.createdAt);
 

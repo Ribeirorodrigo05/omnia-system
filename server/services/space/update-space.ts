@@ -2,7 +2,7 @@
 
 import { and, eq } from "drizzle-orm";
 import { db } from "@/server/database";
-import { spaces, spaceMembers } from "@/server/database/schemas";
+import { spaceMembers, spaces } from "@/server/database/schemas";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
 
 export type UpdateSpaceInput = {
@@ -50,10 +50,7 @@ export async function updateSpace(
       .from(spaceMembers)
       .innerJoin(spaces, eq(spaceMembers.spaceId, spaces.id))
       .where(
-        and(
-          eq(spaceMembers.spaceId, spaceId),
-          eq(spaceMembers.userId, userId)
-        )
+        and(eq(spaceMembers.spaceId, spaceId), eq(spaceMembers.userId, userId)),
       )
       .limit(1);
 

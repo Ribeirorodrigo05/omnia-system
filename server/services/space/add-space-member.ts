@@ -2,7 +2,7 @@
 
 import { and, eq } from "drizzle-orm";
 import { db } from "@/server/database";
-import { spaces, spaceMembers, users } from "@/server/database/schemas";
+import { spaceMembers, spaces, users } from "@/server/database/schemas";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
 
 export type AddSpaceMemberInput = {
@@ -51,10 +51,7 @@ export async function addSpaceMember(
       .from(spaceMembers)
       .innerJoin(spaces, eq(spaceMembers.spaceId, spaces.id))
       .where(
-        and(
-          eq(spaceMembers.spaceId, spaceId),
-          eq(spaceMembers.userId, userId)
-        )
+        and(eq(spaceMembers.spaceId, spaceId), eq(spaceMembers.userId, userId)),
       )
       .limit(1);
 
@@ -66,7 +63,8 @@ export async function addSpaceMember(
     }
 
     const currentMember = currentUserMember[0];
-    const isOwner = currentMember.spaceOwnerId === userId || currentMember.role === "owner";
+    const isOwner =
+      currentMember.spaceOwnerId === userId || currentMember.role === "owner";
 
     if (!isOwner) {
       return {
@@ -102,8 +100,8 @@ export async function addSpaceMember(
       .where(
         and(
           eq(spaceMembers.spaceId, spaceId),
-          eq(spaceMembers.userId, user.id)
-        )
+          eq(spaceMembers.userId, user.id),
+        ),
       )
       .limit(1);
 

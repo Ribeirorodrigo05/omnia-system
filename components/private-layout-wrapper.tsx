@@ -2,10 +2,10 @@
 
 import { useCallback, useState } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
-import { SpaceCreationModal } from "@/components/space-creation-modal";
-import { SpaceRenameModal } from "@/components/space-rename-modal";
-import { SpaceMemberModal } from "@/components/space-member-modal";
 import { ListCreationModal } from "@/components/list-creation-modal";
+import { SpaceCreationModal } from "@/components/space-creation-modal";
+import { SpaceMemberModal } from "@/components/space-member-modal";
+import { SpaceRenameModal } from "@/components/space-rename-modal";
 import { SprintCreationModal } from "@/components/sprint-creation-modal";
 import {
   Breadcrumb,
@@ -23,7 +23,10 @@ import {
 } from "@/components/ui/sidebar";
 import { WorkspaceCreationModal } from "@/components/workspace-creation-modal";
 import { deleteSpace } from "@/server/services/space/delete-space";
-import { getWorkspaceSpaces, type WorkspaceSpace } from "@/server/services/space/get-workspace-spaces";
+import {
+  getWorkspaceSpaces,
+  type WorkspaceSpace,
+} from "@/server/services/space/get-workspace-spaces";
 import type { UserWorkspace } from "@/server/services/workspace/get-user-workspace";
 
 interface PrivateLayoutWrapperProps {
@@ -42,13 +45,18 @@ export function PrivateLayoutWrapper({
   const [currentWorkspace, setCurrentWorkspace] = useState(initialWorkspace);
   const [workspaces, setWorkspaces] = useState(initialWorkspaces);
   const [spaces, setSpaces] = useState(initialSpaces);
-  const [showWorkspaceModal, setShowWorkspaceModal] = useState(!initialWorkspace);
+  const [showWorkspaceModal, setShowWorkspaceModal] = useState(
+    !initialWorkspace,
+  );
   const [showSpaceModal, setShowSpaceModal] = useState(false);
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
   const [showSprintModal, setShowSprintModal] = useState(false);
-  const [selectedSpace, setSelectedSpace] = useState<{ id: string; name: string } | null>(null);
+  const [selectedSpace, setSelectedSpace] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
   const handleWorkspaceCreated = useCallback((newWorkspace: UserWorkspace) => {
     setCurrentWorkspace(newWorkspace);
@@ -67,33 +75,46 @@ export function PrivateLayoutWrapper({
     setShowSpaceModal(false);
   }, []);
 
-  const handleRenameSpace = useCallback((spaceId: string, spaceName: string) => {
-    setSelectedSpace({ id: spaceId, name: spaceName });
-    setShowRenameModal(true);
-  }, []);
+  const handleRenameSpace = useCallback(
+    (spaceId: string, spaceName: string) => {
+      setSelectedSpace({ id: spaceId, name: spaceName });
+      setShowRenameModal(true);
+    },
+    [],
+  );
 
-  const handleSpaceRenamed = useCallback((updatedSpace: { id: string; name: string }) => {
-    setSpaces((prev) =>
-      prev.map((space) =>
-        space.id === updatedSpace.id
-          ? { ...space, name: updatedSpace.name }
-          : space
-      )
-    );
-    setShowRenameModal(false);
-    setSelectedSpace(null);
-  }, []);
+  const handleSpaceRenamed = useCallback(
+    (updatedSpace: { id: string; name: string }) => {
+      setSpaces((prev) =>
+        prev.map((space) =>
+          space.id === updatedSpace.id
+            ? { ...space, name: updatedSpace.name }
+            : space,
+        ),
+      );
+      setShowRenameModal(false);
+      setSelectedSpace(null);
+    },
+    [],
+  );
 
-  const handleDeleteSpace = useCallback(async (spaceId: string, spaceName: string) => {
-    if (confirm(`Are you sure you want to delete "${spaceName}"? This action cannot be undone.`)) {
-      const result = await deleteSpace({ spaceId });
-      if (result.success) {
-        setSpaces((prev) => prev.filter((space) => space.id !== spaceId));
-      } else {
-        alert(result.error || "Failed to delete space");
+  const handleDeleteSpace = useCallback(
+    async (spaceId: string, spaceName: string) => {
+      if (
+        confirm(
+          `Are you sure you want to delete "${spaceName}"? This action cannot be undone.`,
+        )
+      ) {
+        const result = await deleteSpace({ spaceId });
+        if (result.success) {
+          setSpaces((prev) => prev.filter((space) => space.id !== spaceId));
+        } else {
+          alert(result.error || "Failed to delete space");
+        }
       }
-    }
-  }, []);
+    },
+    [],
+  );
 
   const handleAddMember = useCallback((spaceId: string, spaceName: string) => {
     setSelectedSpace({ id: spaceId, name: spaceName });
@@ -212,29 +233,21 @@ export function PrivateLayoutWrapper({
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem className="hidden md:block">
-                      <BreadcrumbLink href="#">
-                        Building Your Application
+                      <BreadcrumbLink href="/dashboard">
+                        Dashboard
                       </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator className="hidden md:block" />
                     <BreadcrumbItem>
-                      <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                      <BreadcrumbPage>Workspace</BreadcrumbPage>
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
               </div>
             </header>
-            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-              <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div className="bg-muted/50 aspect-video rounded-xl" />
-                <div className="bg-muted/50 aspect-video rounded-xl" />
-                <div className="bg-muted/50 aspect-video rounded-xl" />
-              </div>
-              <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
-            </div>
+            <main className="flex-1 p-4">{children}</main>
           </SidebarInset>
         </SidebarProvider>
-        <main className="flex-1">{children}</main>
       </div>
     </>
   );

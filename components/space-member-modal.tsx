@@ -26,7 +26,7 @@ export function SpaceMemberModal({
   onClose,
   spaceId,
   spaceName,
-  onMemberAdded
+  onMemberAdded,
 }: SpaceMemberModalProps) {
   const [email, setEmail] = useState("");
   const [isAdding, setIsAdding] = useState(false);
@@ -42,7 +42,7 @@ export function SpaceMemberModal({
     try {
       const result = await addSpaceMember({
         spaceId,
-        email
+        email,
       });
 
       if (result.success && result.member) {
