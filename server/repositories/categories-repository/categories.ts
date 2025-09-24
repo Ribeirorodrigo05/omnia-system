@@ -1,7 +1,11 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/server/database";
 import { categories } from "@/server/database/schemas";
-import type { CategoryData, Category, CategoryType } from "@/server/types/categories";
+import type {
+  CategoryData,
+  Category,
+  CategoryType,
+} from "@/server/types/categories";
 
 export async function createCategory(data: CategoryData): Promise<Category> {
   const [category] = await db
@@ -49,7 +53,7 @@ export async function findCategoriesBySpace(
     .where(
       and(
         eq(categories.spaceId, spaceId),
-        parentCategoryId 
+        parentCategoryId
           ? eq(categories.categoryId, parentCategoryId)
           : isNull(categories.categoryId),
         isNull(categories.deletedAt),
@@ -64,12 +68,7 @@ export async function findCategoryById(id: string): Promise<Category | null> {
   const [category] = await db
     .select()
     .from(categories)
-    .where(
-      and(
-        eq(categories.id, id),
-        isNull(categories.deletedAt),
-      ),
-    )
+    .where(and(eq(categories.id, id), isNull(categories.deletedAt)))
     .limit(1);
 
   return category || null;

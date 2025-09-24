@@ -38,7 +38,10 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   onCreateSprint?: (spaceId: string) => void;
   onRenameCategory?: (categoryId: string, categoryName: string) => void;
   onDeleteCategory?: (categoryId: string, categoryName: string) => void;
-  onCreateSubcategory?: (parentCategoryId: string, type: "LIST" | "SPRINT") => void;
+  onCreateSubcategory?: (
+    parentCategoryId: string,
+    type: "LIST" | "SPRINT",
+  ) => void;
 }
 
 export function AppSidebar({

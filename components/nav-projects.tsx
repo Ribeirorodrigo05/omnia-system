@@ -71,7 +71,10 @@ export function NavProjects({
   onCreateSprint?: (spaceId: string) => void;
   onRenameCategory?: (categoryId: string, categoryName: string) => void;
   onDeleteCategory?: (categoryId: string, categoryName: string) => void;
-  onCreateSubcategory?: (parentCategoryId: string, type: "LIST" | "SPRINT") => void;
+  onCreateSubcategory?: (
+    parentCategoryId: string,
+    type: "LIST" | "SPRINT",
+  ) => void;
 }) {
   const { isMobile } = useSidebar();
 
@@ -183,7 +186,8 @@ export function NavProjects({
                           align={isMobile ? "end" : "start"}
                         >
                           {/* Criar subcategoria - apenas para LIST e FOLDER */}
-                          {(category.type === "LIST" || category.type === "FOLDER") && (
+                          {(category.type === "LIST" ||
+                            category.type === "FOLDER") && (
                             <>
                               <DropdownMenuSub>
                                 <DropdownMenuSubTrigger>
@@ -192,13 +196,20 @@ export function NavProjects({
                                 </DropdownMenuSubTrigger>
                                 <DropdownMenuSubContent>
                                   <DropdownMenuItem
-                                    onClick={() => onCreateSubcategory?.(category.id, "LIST")}
+                                    onClick={() =>
+                                      onCreateSubcategory?.(category.id, "LIST")
+                                    }
                                   >
                                     <List className="mr-2 h-4 w-4" />
                                     Sub-List
                                   </DropdownMenuItem>
                                   <DropdownMenuItem
-                                    onClick={() => onCreateSubcategory?.(category.id, "SPRINT")}
+                                    onClick={() =>
+                                      onCreateSubcategory?.(
+                                        category.id,
+                                        "SPRINT",
+                                      )
+                                    }
                                   >
                                     <Calendar className="mr-2 h-4 w-4" />
                                     Sprint
@@ -211,7 +222,9 @@ export function NavProjects({
 
                           {/* Renomear */}
                           <DropdownMenuItem
-                            onClick={() => onRenameCategory?.(category.id, category.name)}
+                            onClick={() =>
+                              onRenameCategory?.(category.id, category.name)
+                            }
                           >
                             <Edit className="mr-2 h-4 w-4" />
                             Renomear
@@ -221,7 +234,9 @@ export function NavProjects({
 
                           {/* Deletar */}
                           <DropdownMenuItem
-                            onClick={() => onDeleteCategory?.(category.id, category.name)}
+                            onClick={() =>
+                              onDeleteCategory?.(category.id, category.name)
+                            }
                             className="text-red-600 focus:text-red-600"
                           >
                             <Trash2 className="mr-2 h-4 w-4 text-red-600" />

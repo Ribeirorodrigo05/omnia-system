@@ -23,7 +23,11 @@ interface SpaceDotMenuProps {
 export function SpaceDotMenu({ spaceId, onListCreated }: SpaceDotMenuProps) {
   const [showListModal, setShowListModal] = useState(false);
 
-  const handleListCreated = (list: { id: string; name: string; type: string }) => {
+  const handleListCreated = (list: {
+    id: string;
+    name: string;
+    type: string;
+  }) => {
     if (onListCreated) {
       onListCreated(list);
     }
@@ -56,12 +60,8 @@ export function SpaceDotMenu({ spaceId, onListCreated }: SpaceDotMenuProps) {
             </DropdownMenuSubContent>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
-          <DropdownMenuItem disabled>
-            Renomear
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            Deletar
-          </DropdownMenuItem>
+          <DropdownMenuItem disabled>Renomear</DropdownMenuItem>
+          <DropdownMenuItem disabled>Deletar</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 

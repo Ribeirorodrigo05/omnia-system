@@ -4,11 +4,14 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/server/database";
 import { spaceMembers } from "@/server/database/schemas";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
-import { 
-  createCategory, 
-  findCategoryByNameAndSpace 
+import {
+  createCategory,
+  findCategoryByNameAndSpace,
 } from "@/server/repositories/categories-repository/categories";
-import type { CreateListInput, CreateListResult } from "@/server/types/categories";
+import type {
+  CreateListInput,
+  CreateListResult,
+} from "@/server/types/categories";
 
 export async function createList(
   input: CreateListInput,
@@ -57,7 +60,7 @@ export async function createList(
     const existingCategory = await findCategoryByNameAndSpace(
       name.trim(),
       spaceId,
-      "LIST"
+      "LIST",
     );
 
     if (existingCategory) {
