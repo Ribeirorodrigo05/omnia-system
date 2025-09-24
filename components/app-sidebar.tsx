@@ -36,6 +36,9 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   onAddMember?: (spaceId: string, spaceName: string) => void;
   onCreateList?: (spaceId: string) => void;
   onCreateSprint?: (spaceId: string) => void;
+  onRenameCategory?: (categoryId: string, categoryName: string) => void;
+  onDeleteCategory?: (categoryId: string, categoryName: string) => void;
+  onCreateSubcategory?: (parentCategoryId: string, type: "LIST" | "SPRINT") => void;
 }
 
 export function AppSidebar({
@@ -48,6 +51,9 @@ export function AppSidebar({
   onAddMember,
   onCreateList,
   onCreateSprint,
+  onRenameCategory,
+  onDeleteCategory,
+  onCreateSubcategory,
   ...props
 }: AppSidebarProps) {
   const teams = workspace
@@ -95,6 +101,9 @@ export function AppSidebar({
           onAddMember={onAddMember}
           onCreateList={onCreateList}
           onCreateSprint={onCreateSprint}
+          onRenameCategory={onRenameCategory}
+          onDeleteCategory={onDeleteCategory}
+          onCreateSubcategory={onCreateSubcategory}
         />
       </SidebarContent>
       <SidebarFooter>

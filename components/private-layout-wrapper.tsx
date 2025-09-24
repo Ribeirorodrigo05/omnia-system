@@ -158,6 +158,27 @@ export function PrivateLayoutWrapper({
     }
   }, [currentWorkspace]);
 
+  const handleRenameCategory = useCallback(
+    (categoryId: string, categoryName: string) => {
+      console.log("Renaming category:", categoryId, categoryName);
+    },
+    [],
+  );
+
+  const handleDeleteCategory = useCallback(
+    (categoryId: string, categoryName: string) => {
+      console.log("Deleting category:", categoryId, categoryName);
+    },
+    [],
+  );
+
+  const handleCreateSubcategory = useCallback(
+    (parentCategoryId: string, type: "LIST" | "SPRINT") => {
+      console.log("Creating subcategory:", parentCategoryId, type);
+    },
+    [],
+  );
+
   return (
     <>
       <WorkspaceCreationModal
@@ -221,6 +242,9 @@ export function PrivateLayoutWrapper({
             onAddMember={handleAddMember}
             onCreateList={handleCreateList}
             onCreateSprint={handleCreateSprint}
+            onRenameCategory={handleRenameCategory}
+            onDeleteCategory={handleDeleteCategory}
+            onCreateSubcategory={handleCreateSubcategory}
           />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">

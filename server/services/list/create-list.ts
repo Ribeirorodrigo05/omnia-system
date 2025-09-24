@@ -2,23 +2,13 @@
 
 import { and, eq } from "drizzle-orm";
 import { db } from "@/server/database";
-import { categories, spaceMembers } from "@/server/database/schemas";
+import { spaceMembers } from "@/server/database/schemas";
 import { getCurrentUser } from "@/server/services/auth/get-current-user";
-
-export type CreateListInput = {
-  name: string;
-  spaceId: string;
-};
-
-export type CreateListResult = {
-  success: boolean;
-  list?: {
-    id: string;
-    name: string;
-    type: string;
-  };
-  error?: string;
-};
+import { 
+  createCategory, 
+  findCategoryByNameAndSpace 
+} from "@/server/repositories/categories-repository/categories";
+import type { CreateListInput, CreateListResult } from "@/server/types/categories";
 
 export async function createList(
   input: CreateListInput,
@@ -49,7 +39,6 @@ export async function createList(
       };
     }
 
-    // Verifica se o usuário é membro do space
     const spaceMember = await db
       .select()
       .from(spaceMembers)
@@ -65,44 +54,33 @@ export async function createList(
       };
     }
 
-    // Verifica se já existe uma categoria com o mesmo nome no space
-    const existingCategory = await db
-      .select()
-      .from(categories)
-      .where(
-        and(
-          eq(categories.name, name.trim()),
-          eq(categories.spaceId, spaceId),
-          eq(categories.type, "LIST"),
-        ),
-      )
-      .limit(1);
+    const existingCategory = await findCategoryByNameAndSpace(
+      name.trim(),
+      spaceId,
+      "LIST"
+    );
 
-    if (existingCategory.length > 0) {
+    if (existingCategory) {
       return {
         success: false,
         error: "A list with this name already exists in this space",
       };
     }
 
-    // Cria a nova categoria do tipo LIST
-    const [newList] = await db
-      .insert(categories)
-      .values({
-        name: name.trim(),
-        type: "LIST",
-        spaceId: spaceId,
-        ownerId: userId,
-      })
-      .returning({
-        id: categories.id,
-        name: categories.name,
-        type: categories.type,
-      });
+    const newList = await createCategory({
+      name: name.trim(),
+      type: "LIST",
+      spaceId: spaceId,
+      ownerId: userId,
+    });
 
     return {
       success: true,
-      list: newList,
+      list: {
+        id: newList.id,
+        name: newList.name,
+        type: newList.type,
+      },
     };
   } catch (error) {
     console.error("Error creating list:", error);

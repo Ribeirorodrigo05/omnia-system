@@ -48,6 +48,9 @@ export function NavProjects({
   onAddMember,
   onCreateList,
   onCreateSprint,
+  onRenameCategory,
+  onDeleteCategory,
+  onCreateSubcategory,
 }: {
   projects: Array<{
     id: string;
@@ -66,6 +69,9 @@ export function NavProjects({
   onAddMember?: (spaceId: string, spaceName: string) => void;
   onCreateList?: (spaceId: string) => void;
   onCreateSprint?: (spaceId: string) => void;
+  onRenameCategory?: (categoryId: string, categoryName: string) => void;
+  onDeleteCategory?: (categoryId: string, categoryName: string) => void;
+  onCreateSubcategory?: (parentCategoryId: string, type: "LIST" | "SPRINT") => void;
 }) {
   const { isMobile } = useSidebar();
 
@@ -164,6 +170,65 @@ export function NavProjects({
                           <span>{category.name}</span>
                         </a>
                       </SidebarMenuSubButton>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <SidebarMenuAction showOnHover>
+                            <MoreHorizontal />
+                            <span className="sr-only">More</span>
+                          </SidebarMenuAction>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          className="w-48 rounded-lg"
+                          side={isMobile ? "bottom" : "right"}
+                          align={isMobile ? "end" : "start"}
+                        >
+                          {/* Criar subcategoria - apenas para LIST e FOLDER */}
+                          {(category.type === "LIST" || category.type === "FOLDER") && (
+                            <>
+                              <DropdownMenuSub>
+                                <DropdownMenuSubTrigger>
+                                  <Plus className="mr-2 h-4 w-4" />
+                                  Criar
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuSubContent>
+                                  <DropdownMenuItem
+                                    onClick={() => onCreateSubcategory?.(category.id, "LIST")}
+                                  >
+                                    <List className="mr-2 h-4 w-4" />
+                                    Sub-List
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => onCreateSubcategory?.(category.id, "SPRINT")}
+                                  >
+                                    <Calendar className="mr-2 h-4 w-4" />
+                                    Sprint
+                                  </DropdownMenuItem>
+                                </DropdownMenuSubContent>
+                              </DropdownMenuSub>
+                              <DropdownMenuSeparator />
+                            </>
+                          )}
+
+                          {/* Renomear */}
+                          <DropdownMenuItem
+                            onClick={() => onRenameCategory?.(category.id, category.name)}
+                          >
+                            <Edit className="mr-2 h-4 w-4" />
+                            Renomear
+                          </DropdownMenuItem>
+
+                          <DropdownMenuSeparator />
+
+                          {/* Deletar */}
+                          <DropdownMenuItem
+                            onClick={() => onDeleteCategory?.(category.id, category.name)}
+                            className="text-red-600 focus:text-red-600"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4 text-red-600" />
+                            Deletar
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </SidebarMenuSubItem>
                   ))}
                 </SidebarMenuSub>

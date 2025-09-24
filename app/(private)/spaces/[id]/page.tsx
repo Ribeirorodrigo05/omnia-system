@@ -5,9 +5,9 @@ import { getSpaceCategories } from "@/server/services/category/get-space-categor
 import { getSpaceDetails } from "@/server/services/space/get-space-details";
 
 interface SpacePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function SpacePage({ params }: SpacePageProps) {
@@ -17,15 +17,17 @@ export default async function SpacePage({ params }: SpacePageProps) {
     redirect("/login");
   }
 
+  const { id } = await params;
+
   // Busca detalhes do space e verifica se o usuário tem acesso
-  const space = await getSpaceDetails(params.id);
+  const space = await getSpaceDetails(id);
 
   if (!space) {
     redirect("/dashboard");
   }
 
   // Busca as categories do space
-  const categories = await getSpaceCategories(params.id);
+  const categories = await getSpaceCategories(id);
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
@@ -39,7 +41,7 @@ export default async function SpacePage({ params }: SpacePageProps) {
       </div>
 
       <SpaceCategoriesView
-        spaceId={params.id}
+        spaceId={id}
         spaceName={space.name}
         categories={categories}
       />

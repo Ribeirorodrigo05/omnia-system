@@ -99,7 +99,6 @@ export function SpaceRenameModal({
               minLength={1}
               maxLength={255}
               autoFocus
-              autoSelect
             />
           </div>
 

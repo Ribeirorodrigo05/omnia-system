@@ -42,6 +42,49 @@ To create a new frontend component or page in **Omnia**, follow these steps:
 6. **index.ts**: Ensure to export your new code (components, hooks, utils, services, types) in the respective `index.ts` files for easy imports elsewhere in the application. Always use absolute imports from the `src` folder.
 7. **Types and Interfaces**: Define any new TypeScript types or interfaces in the `types` folder to ensure type safety across the application. Always use types from the `types` folder in index.ts files. Never define types directly in component files or pages. This rule is crucial for maintaining a clean and organized codebase. This should be followed strictly, for all new code in all part of the codebase.
 
+### **Types and Interfaces Best Practices**
+- **Location Rule**: ALL types and interfaces must be defined in the `types` folder, never in component files, service files, or repository files
+- **Type vs Interface**: Use `type` for simple data structures and union types. Use `interface` only when you need to extend or implement
+- **Naming Convention**: Use PascalCase for types and interfaces
+- **Export Pattern**: Always export types/interfaces from the respective `index.ts` files
+
+**Bad Example (NEVER do this):**
+```typescript
+// ❌ In repository file - categories.ts
+export type CategoryData = {
+  name: string;
+  type: "LIST" | "SPRINT" | "FOLDER";
+  spaceId: string;
+  ownerId: string;
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  // ...
+};
+```
+
+**Good Example (Always do this):**
+```typescript
+// ✅ In types/categories.ts
+export type CategoryData = {
+  name: string;
+  type: CategoryType;
+  spaceId: string;
+  ownerId: string;
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  // ...
+};
+
+// ✅ In repository file - categories.ts
+import type { CategoryData, Category } from "@/server/types/categories";
+```
+
 
 ### Fetch data from the backend
 To fetch data from the backend, use the services defined in the `services` folder. This application only use API routes defined in the backend. Do not fetch data directly from the database or any other source.   
@@ -98,7 +141,8 @@ The codebase follows a functional programming paradigm, emphasizing the use of p
         - Check for proper use of Tailwind CSS for styling.
         - Confirm that state management is handled via Zustand.
         - Ensure no prop drilling is present; prefer Zustand or children prop for data passing.
-        - Validate that all new types are defined in the `types` folder and not within component files or pages.
+        - Validate that all new types are defined in the `types` folder and not within component files, pages, services, or repository files.
+        - Ensure types/interfaces follow the naming convention (PascalCase) and use `type` for simple structures, `interface` only for extending.
         - Ensure there are no comments in the code; documentation should be in separate files if needed.
         - Check for adherence to naming conventions and coding styles.
         - Verify that tests are written for new services and are located in the same folder as the service files.
